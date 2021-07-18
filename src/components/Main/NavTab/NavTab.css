@@ -1,0 +1,16 @@
+.main__navtab {
+    height: 66px;
+    background: rgba(39, 39, 39, 1);
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: #fff;
+}
+
+.main__link {
+    margin-right: 40px;
+    font-family: Inter;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+}
