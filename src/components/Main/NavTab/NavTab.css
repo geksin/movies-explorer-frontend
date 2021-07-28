@@ -7,10 +7,24 @@
     color: #fff;
 }
 
+.main__links {
+    display:flex;
+    list-style-type: none;
+    margin:0;
+    padding:0;
+    align-items: center;
+}
+
 .main__link {
     margin-right: 40px;
     font-family: Inter;
     font-size: 13px;
     font-weight: 500;
     line-height: 16px;
+    transform: 300ms;
+    color: #fff;
+}
+
+.main__link:hover {
+    opacity: 0.7;
 }

@@ -7,7 +7,7 @@ function Promo () {
     return (
         <div className="promo">
             <img className="promo__image" src={imgBackground} alt="Логотип постадочной страницы" />
-            <h1 className="promo__header">Учебный проект студента факультета Веб-разработки.</h1>
+            <h1 className="promo__header header__page">Учебный проект студента факультета Веб-разработки.</h1>
         </div>
         );
 }

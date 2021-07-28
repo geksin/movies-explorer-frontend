@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 function NavTab () {
     return (
         <div className="main__navtab">
-            <div className="main__links">
-                <a className="main__link" to="/">О проекте</a>
-                <a className="main__link" to="/">Технологии</a>
-                <a className="main__link" to="/">Студент</a>
-            </div>
+                 <ul className="main__links">
+                    <li className="text__standart"><a className="main__link" href="#">О проекте</a></li>
+                    <li className="text__standart"><a className="main__link" href="#">Технологии</a></li>
+                    <li className="text__standart"><a className="main__link" href="#">Студент</a></li>
+                </ul>
         </div>
         );
 }
