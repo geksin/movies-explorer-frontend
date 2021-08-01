@@ -3,7 +3,7 @@
     background: rgba(7, 48, 66, 1);
     display: flex;
     justify-content: flex-end;
-    font-family: Inter;
+    font-family: Inter, Arial, sans-serif;
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
