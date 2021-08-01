@@ -3,17 +3,17 @@
     font-family: Inter, Arial, sans-serif;
     color: #fff;
     padding-bottom: 70px;
+    max-width: 396px;
+    margin: 0 auto;
 }
 
 .login__header {
     margin:0 auto;
     padding-top: 148px;
     display: flex;
-    width: 396px;
 }
 
 .login__form {
-    width: 396px;
     margin: 48px auto;
     flex-direction: column;
     display: flex;
@@ -41,7 +41,6 @@
 
 .login__button-container {
     margin: 221px auto;
-    width: 396px;
 }
 
 .login__button {
@@ -79,3 +78,28 @@
 .login__link-singup:hover {
     opacity: 0.8;
 }
+
+@media screen and (max-width: 910px) {
+
+    }
+    
+    @media screen and (max-width: 586px) {
+        .login {
+            max-width: 260px;
+        }
+
+        .login__header {
+            font-size: 24px;
+            line-height: 29px;
+            justify-content:center;
+        }
+        .login__button-container {
+            margin: 267px auto 30px;
+        }
+
+        .login__text, .login__button {
+            font-size: 12px;
+        }
+    }
+    
+    

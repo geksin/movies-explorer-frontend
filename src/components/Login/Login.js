@@ -1,7 +1,5 @@
 import React from 'react';
-// import { withRouter } from 'react-router-dom';
-
-
+import {Link} from 'react-router-dom';
 import './Login.css';
 
 
@@ -39,7 +37,7 @@ function Login(props) {
             </form>
             <div className="login__button-container">
                 <button type="submit" onSubmit={handleSubmit} className="login__button">Войти</button>
-                <p className="login__text">Ещё не зарегистрированы?<a href="/singup" className="login__link-singup" title="ссылка для регистрации">Регистрация</a></p>
+                <p className="login__text">Ещё не зарегистрированы?<Link to="/singup" className="login__link-singup" title="ссылка для регистрации">Регистрация</Link></p>
             </div>
       </main>
     )

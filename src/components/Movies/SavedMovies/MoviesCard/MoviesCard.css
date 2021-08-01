@@ -58,7 +58,7 @@
 .card__button-save-active {
     content: icon;
     background: #EE3465;
-    background-image: url(../../../images/icon_check.svg) no-repeat center;
+    background-image: url(../../../../images/icon_check.svg) no-repeat center;
 }
 
 .card__button-save:hover {
@@ -68,18 +68,17 @@
   
 @media screen and (max-width: 910px) {
 
-  }
-  
-  
+}
+
+
 @media screen and (max-width: 586px) {
 
-.card__name {
+  .card__name {
     font-weight: 500;
     font-size: 12px;
     line-height: 18px;
-}
-.card__time {
-    font-size:10px;
-}
-
+  }
+  .card__time {
+      font-size:10px;
+  }
 }

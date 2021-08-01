@@ -17,9 +17,7 @@
 
 .header__link {
     display: flex;
-    align-items: center;
-    margin-right: 70px;
-    
+    align-items: center;   
 }
 
 .header__signin_link {
@@ -51,7 +49,6 @@
 }
 
 .header__logo-link {
-    margin:0;
     display: flex;
     align-items: center;
     transition:300ms;
@@ -92,4 +89,86 @@
 
 .menu__link_active {
     font-weight: 500;
+}
+
+.header__menu-button {
+    border: none;
+    background: none;
+    display: none;
+    cursor: pointer;
+    z-index: 3;
+
+}
+
+.header__menu-back {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background:#202020;
+    width:520px;
+    z-index: 2;
+
+}
+
+.header__burger-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 159px 90px;
+}
+
+.header__menu-none {
+    display: none;
+}
+
+.cover {
+    background:rgba( 0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+@media screen and (max-width: 910px) {
+    .header__account {
+        margin: auto 30px;
+    }
+    .header__menu-button {
+        display: block;
+    }
+    .header__nav {
+        display:none;
+    }
+    .menu__link_active {
+        font-weight: 400;
+        text-decoration: underline;
+    }
+    .menu__link:last-child {
+        width: auto;
+        margin-left: 0;
+    }
+    .menu__link {
+        margin:28px 0 0 0;
+    }
+}
+
+@media screen and (max-width: 586px) {
+    .header__nav {
+        display: none;
+        }
+    .header__account {
+        margin: auto 14px;
+        }
+    .header__burger-menu {
+        padding: 144px 10px;
+    }
+    .menu__link {
+        margin:24px 0 0 0;
+    }
+    .header__menu-back {
+        width:100%
+    }
 }

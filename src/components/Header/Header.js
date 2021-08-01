@@ -4,8 +4,8 @@ import './Header.css';
 import { Route, Link, NavLink, BrowserRouter as Router } from 'react-router-dom';
 import headerLogoPath from '../../images/header-logo.svg';
 import accountLogoPath from '../../images/account-logo.svg';
-import Main from '../Main/Main';
-import Movies from '../Movies/Movies';
+import burgerMenuPath from '../../images/menu.svg';
+import burgerCloseMenuPath from '../../images/close.svg';
 
 
 function Header (props) {
@@ -18,19 +18,22 @@ function Header (props) {
     props.singIn();
   }
 
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  function openMenu() {
+    setIsMenuOpen(!isMenuOpen);
+  }
+
 
   if (!props.isAuth) {
     return (
         <header className="header">
-         
-          <div className="header__link">
-            <Router >
-            <Link to="/singup" className="header__signup_link">Регистрация</Link> 
-            <button to="/singin" className="header__signin_link" onClick={handleSignIn}>Войти</button> 
-            </Router>
-          {/* <Route exact path="/">
-            <p>{props.email} <a onClick={handleSignOut} href="#" className="login__sing-out">Выйти</a></p>
-          </Route> */}
+          <div className="header__account">
+          <Link href="/" className="header__logo-link" target="_self"><img className="header__logo" src={headerLogoPath} alt="Логотип Дипломного проекта" /></Link>
+            <div className="header__link">
+              <Link to="/singup" className="header__signup_link">Регистрация</Link> 
+              <button to="/singin" className="header__signin_link" onClick={handleSignIn}>Войти</button> 
+            </div>
           </div>
         </header>
         );
@@ -38,15 +41,23 @@ function Header (props) {
     return (
       <div className="header header__login">
         <div className="header__account">
-          <a href="/" className="header__logo-link" target="_self"><img className="header__logo" src={headerLogoPath} alt="Логотип Mesto" /></a>
-          <Router>
+          <Link href="/" className="header__logo-link" target="_self"><img className="header__logo" src={headerLogoPath} alt="Логотип Дипломного проекта" /></Link>
           <nav className="header__nav">
               <NavLink exact to="/movies" activeClassName="menu__link_active" className="menu__link">Фильмы</NavLink>  
               <NavLink exact to="/saved-movies" activeClassName="menu__link_active" className="menu__link">Сохранённые фильмы</NavLink>  
               <NavLink exact to="/profile" activeClassName="menu__link_active" className="menu__link">Аккаунт<img className="header__account-logo" src={accountLogoPath} alt="Логотип Mesto" /></NavLink>
           </nav>
-          </Router>
-        </div>
+          <button className="header__menu-button" type="button" onClick={openMenu}><img src={isMenuOpen ? burgerMenuPath : burgerCloseMenuPath} alt="меню" /></button>
+          <div className={isMenuOpen ? "header__menu-none" : "cover"} onClick={openMenu} >
+            <div className={isMenuOpen ? "header__menu-none" : "header__menu-back"} >
+              <nav className="header__burger-menu">
+                  <NavLink exact to="/" activeClassName="menu__link_active" className="menu__link">Главная</NavLink>  
+                  <NavLink exact to="/movies" activeClassName="menu__link_active" className="menu__link">Фильмы</NavLink>  
+                  <NavLink exact to="/saved-movies" activeClassName="menu__link_active" className="menu__link">Сохранённые фильмы</NavLink>  
+              </nav>
+            </div>
+          </div>
+          </div> 
     </div>
     );
 

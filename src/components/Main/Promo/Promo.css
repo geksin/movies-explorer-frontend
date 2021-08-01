@@ -18,3 +18,10 @@
     height: 320px;
     top: 156px;
 }
+
+@media screen and (max-width: 586px) {
+    .promo__header {
+    font-size: 31px;
+    }
+}
+    

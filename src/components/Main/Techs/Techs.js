@@ -6,7 +6,7 @@ import './Techs.css';
 function Techs () {
     return (
         <div className="main__techs">
-            <h2 className="header__point">
+            <h2 className="header__point"> <a id="tech"></a>
                 Технологии
             </h2>
             <div className="techs__header header__page">7 технологий</div>

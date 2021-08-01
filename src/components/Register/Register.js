@@ -1,10 +1,6 @@
 import React from 'react';
-// import { withRouter } from 'react-router-dom';
-
-
-import './Register.css';
-
-
+import {Link} from 'react-router-dom';
+import '../Login/Login.css';
 
 function Register(props) {
   const [userData, setUserData] = React.useState({email: '',password: ''});
@@ -41,7 +37,7 @@ function Register(props) {
             </form>
             <div className="login__button-container">
                 <button type="submit" onSubmit={handleSubmit} className="login__button">Зарегистрироваться</button>
-                <p className="login__text">Уже зарегистрированы?<a href="/singup" className="login__link-singup" title="ссылка для входа">Войти</a></p>
+                <p className="login__text">Уже зарегистрированы?<Link to="/singin" className="login__link-singup" title="ссылка для входа">Войти</Link></p>
             </div>
       </main>
     )
