@@ -1,7 +1,7 @@
 
 import React from 'react';
 import './Header.css';
-import { Route, Link, NavLink, BrowserRouter as Router } from 'react-router-dom';
+import { Link, NavLink} from 'react-router-dom';
 import headerLogoPath from '../../images/header-logo.svg';
 import accountLogoPath from '../../images/account-logo.svg';
 import burgerMenuPath from '../../images/menu.svg';
@@ -10,9 +10,9 @@ import burgerCloseMenuPath from '../../images/close.svg';
 
 function Header (props) {
 
-  function handleSignOut() {
-    props.singOut();
-  }
+  // function handleSignOut() {
+  //   props.singOut();
+  // }
 
   function handleSignIn () {
     props.singIn();

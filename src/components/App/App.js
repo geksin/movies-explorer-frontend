@@ -9,7 +9,7 @@ import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../Movies/SavedMovies/SavedMovies';
-import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 function App() {
 

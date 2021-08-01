@@ -1,6 +1,5 @@
 import React from 'react';
 import './Profile.css';
-import { Link } from 'react-router-dom';
 
 function Profile (props) {
 
@@ -19,8 +18,6 @@ function Profile (props) {
     function outProfile () {
         console.log('outProfile');
     }
-
-
 
     return (
         <main className="profile">

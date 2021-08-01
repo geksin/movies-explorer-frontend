@@ -20,10 +20,6 @@ function MoviesCardList () {
         console.log('onDeleteCard');
     }
 
-    function onDeleteCard () {
-        console.log('onDeleteCard');
-    }
-
     function onMoreCards () {
         console.log('onDeleteCard');
     }

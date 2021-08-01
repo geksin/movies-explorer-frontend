@@ -1,20 +1,15 @@
 
-import React, {useMemo} from 'react';
+import React from 'react';
 import './MoviesCard.css'
 import pathIcon from '../../../../images/icon_check.svg'
 
 
 function MoviesCard (props) {
   const { 
-    key,
     name,
     url,
-    like,
     time,
-    cardOwner,
     onCardClick,
-    onCardLike,
-    onDeleteCard,
   } = props;
 
 
@@ -25,8 +20,6 @@ function MoviesCard (props) {
 //   );
 
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-  // console.log(card.likes);
-  // console.log(currentUser._id);
   // const isLiked = props.card.likes.some(i => i === currentUser._id);
 
 //   const isLiked = useMemo(() =>{
@@ -60,7 +53,7 @@ const [isSaved, setIsSaved] = React.useState(false);
                 <p className="card__time">{time} минут</p>
             </div>
             <img className="card__photo" src={`https://api.nomoreparties.co${url}`} title={`Превью фильма ${name} `} alt={`Превью фильма ${name} `} onClick={onCardClick} />
-            <button type="button" className={ isSaved ? "card__button-save card__button-save-active" : "card__button-save"} onClick={onCardSave}>{ isSaved ? <img src={pathIcon} title="Сохранено" /> : "Сохранить" } </button>
+            <button type="button" className={ isSaved ? "card__button-save card__button-save-active" : "card__button-save"} onClick={onCardSave}>{ isSaved ? <img src={pathIcon} alt="Save" title="Сохранено" /> : "Сохранить" } </button>
         </article>
     </div>
   );

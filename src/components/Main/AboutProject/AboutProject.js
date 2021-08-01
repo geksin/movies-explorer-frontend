@@ -1,11 +1,10 @@
-
 import React from 'react';
 import './AboutProject.css';
 
 function AboutProject () {
     return (
         <div className="main__about">
-            <h2 className="header__point"> <a name="about"></a>
+            <h2 className="header__point"><a name="about"></a>
                 О проекте
             </h2>
             <div className="about__info">
