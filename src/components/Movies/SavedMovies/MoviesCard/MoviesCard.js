@@ -1,7 +1,7 @@
 
 import React from 'react';
 import './MoviesCard.css'
-import pathIcon from '../../../../images/icon_check.svg'
+import pathIconSave from '../../../../images/icon_check-save.svg'
 
 
 function MoviesCard (props) {
@@ -53,7 +53,7 @@ const [isSaved, setIsSaved] = React.useState(false);
                 <p className="card__time">{time} минут</p>
             </div>
             <img className="card__photo" src={`https://api.nomoreparties.co${url}`} title={`Превью фильма ${name} `} alt={`Превью фильма ${name} `} onClick={onCardClick} />
-            <button type="button" className={ isSaved ? "card__button-save card__button-save-active" : "card__button-save"} onClick={onCardSave}>{ isSaved ? <img src={pathIcon} alt="Save" title="Сохранено" /> : "Сохранить" } </button>
+            <button type="button" className={ isSaved ? "card__button-save card__button-save-active" : "card__button-save"} onClick={onCardSave}>{ isSaved ? "Удалено" : <img src={pathIconSave} alt="Save" title="Сохранено" /> } </button>
         </article>
     </div>
   );

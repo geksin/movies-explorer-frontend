@@ -51,9 +51,9 @@ function Header (props) {
           <div className={isMenuOpen ? "header__menu-none" : "cover"} onClick={openMenu} >
             <div className={isMenuOpen ? "header__menu-none" : "header__menu-back"} >
               <nav className="header__burger-menu">
-                  <NavLink exact to="/" activeClassName="menu__link_active" className="menu__link">Главная</NavLink>  
-                  <NavLink exact to="/movies" activeClassName="menu__link_active" className="menu__link">Фильмы</NavLink>  
-                  <NavLink exact to="/saved-movies" activeClassName="menu__link_active" className="menu__link">Сохранённые фильмы</NavLink>  
+                  <NavLink exact to="/" activeClassName="menu__link_active" className="menu__link menu__burger-link">Главная</NavLink>  
+                  <NavLink exact to="/movies" activeClassName="menu__link_active" className="menu__link menu__burger-link">Фильмы</NavLink>  
+                  <NavLink exact to="/saved-movies" activeClassName="menu__link_active" className="menu__link menu__burger-link">Сохранённые фильмы</NavLink>  
               </nav>
             </div>
           </div>

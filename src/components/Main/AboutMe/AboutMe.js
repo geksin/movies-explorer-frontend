@@ -5,7 +5,7 @@ import './AboutMe.css';
 function AboutMe () {
     return (
             <div className="main__about-me">
-                <h2 className="header__point">
+                <h2 className="header__point" id="me">
                     Студент
                 </h2>
                 <div className="about-me__info">
@@ -17,7 +17,7 @@ function AboutMe () {
                             <p className="text__standart about-me__text">Я родился и живу в Саратове, закончил факультет экономики СГУ. У меня есть жена и дочь. Я люблю слушать музыку, а ещё увлекаюсь бегом. Недавно начал кодить. С 2015 года работал в компании «СКБ Контур». После того, как прошёл курс по веб-разработке, начал заниматься фриланс-заказами и ушёл с постоянной работы.</p>
                         </div>
                         <ul className="about-me__links">
-                            <li className="text__standart"><a className="about-me__link" href="#">Facebook</a></li>
+                            <li className="text__standart"><a className="about-me__link" href="#" title="Facebook">Facebook</a></li>
                             <li className="text__standart"><a className="about-me__link" href="#">Github</a></li>
                         </ul>
                     </div>

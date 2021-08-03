@@ -5,6 +5,8 @@ import NavTab from './NavTab/NavTab';
 import Techs from './Techs/Techs';
 import AboutMe from './AboutMe/AboutMe';
 import AboutProject from './AboutProject/AboutProject';
+import { Route } from 'react-router-dom';
+
 
 import './Main.css';
 
@@ -13,9 +15,11 @@ function Main () {
         <main className="main">
            <Promo />
            <NavTab />
-           <AboutProject />
-           <Techs />
-           <AboutMe />
+           <Route to="/#about">
+                <AboutProject  />
+           </Route>
+           <Techs name="techs" />
+           <AboutMe name="me" />
         </main>
         );
 }

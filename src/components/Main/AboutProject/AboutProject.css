@@ -59,7 +59,7 @@
 }
 
 
-@media screen and (max-width: 910px) {
+@media screen and (max-width: 980px) {
     .main__about {
         padding: 90px 50px;
     }
@@ -70,6 +70,16 @@
     }
     .about__timeline {
         margin-top: 93px;
+    }  
+
+    .about__description {
+        max-width:360px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .about__description {
+        max-width:280px;
     }
 }
     

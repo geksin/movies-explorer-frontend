@@ -34,20 +34,31 @@
 }
 
 @media screen and (max-width: 910px) {
+
     .main__techs {
         padding: 90px 50px;
     }
+}   
 
+@media screen and (max-width: 768px) {
+    .main__techs {
+        padding: 80px 30px;
+    }
+    .techs__cards {
+        margin: 50px auto 70px;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 57px);
+    }
+    .techs__header {
+        font-size: 30px;
+        margin: 60px auto 24px;
+        line-height: 36px;
+    }
     }
     
-    @media screen and (max-width: 586px) {
+    @media screen and (max-width: 425px) {
         .main__techs {
             padding:70px 18px;
-        }
-        .techs__header {
-            font-size: 30px;
-            margin: 60px auto 24px;
-            line-height: 36px;
         }
         .techs__cards {
             margin: 50px auto 70px;
