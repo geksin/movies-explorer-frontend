@@ -9,10 +9,10 @@
     margin-top: 60px;
     border-radius: 10px;
     height: 327px;
-    width: 270px;
+    max-width: 270px;
     margin-left: 15px;
 }
-    
+
 .about-me__info {
     display:flex;
     justify-content: space-between;
