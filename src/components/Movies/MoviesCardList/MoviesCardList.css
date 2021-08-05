@@ -42,13 +42,6 @@
       grid-row-gap: 24px;
     }
   }
-  @media screen and (max-width: 744px) {
-    .movies__cards-container {
-      margin: auto 10px;
-      grid-column-gap: 16px;
-      grid-row-gap: 20px;
-    }
-  }
 
   
   @media screen and (max-width: 586px) {

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import './MoviesCard.css'
+import '../../MoviesCard/MoviesCard.css'
 import pathIconSave from '../../../../images/icon_check-save.svg'
 
 
