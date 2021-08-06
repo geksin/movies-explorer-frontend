@@ -1,0 +1,27 @@
+.promo {
+    height: 524px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(7, 48, 66, 1);
+}
+
+.promo__header {
+    width:730px;
+    text-align: center;
+}
+
+.promo__image {
+    position: absolute;
+    max-width: 320px;
+    height: 320px;
+    top: 156px;
+}
+
+@media screen and (max-width: 586px) {
+    .promo__header {
+    font-size: 31px;
+    }
+}
+    

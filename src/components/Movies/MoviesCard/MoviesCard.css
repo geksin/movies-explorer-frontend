@@ -1,0 +1,85 @@
+.card__template {
+    background: #222222;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+
+.card__up-part {
+    display:flex;
+    justify-content:space-between;
+    margin: 18px;
+
+}
+
+.card__name {
+    margin: 0;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+}
+
+.card__time {
+    margin: 0;
+    font-size: 13px;
+    color: #8B8B8B;
+    align-items: center;
+}
+
+.card__photo {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center center;
+    background-size: cover;
+}
+
+.card__button-save {
+    margin: 18px auto;
+    display: flex;
+    color: white;
+    border: none;
+    width: 100px;
+    height: 29px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 11px;
+    justify-content: center;
+    background: #313131;
+    border-radius: 30px;
+    cursor: pointer;
+    transform:300ms;
+    align-items: center;
+}
+
+.card__button-save-active {
+    content: icon;
+    background: #EE3465;
+    background-image: url(../../../images/icon_check.svg) no-repeat center;
+}
+
+.card__button-save:hover {
+    opacity: 0.7;
+}
+
+  
+@media screen and (max-width: 910px) {
+
+  }
+  
+  
+@media screen and (max-width: 586px) {
+
+.card__name {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width:240px;
+}
+.card__time {
+    font-size:10px;
+}
+
+}

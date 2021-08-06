@@ -1,0 +1,118 @@
+.main__about {
+    background: rgba(32, 32, 32, 1);
+    padding: 110px 70px;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+}
+
+.about__info {
+    display: flex;
+    margin-top: 70px;
+    justify-content: space-between;
+
+}
+
+.about__description {
+    max-width:550px;
+    padding-right: 15px;
+    
+}
+
+.about__header-info {
+    font-size: 20px;
+    line-height: 24px;
+
+}
+
+.about__header-text {
+    margin-top: 26px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0em;
+
+}
+
+.about__timeline {
+    margin-top: 110px;
+    display: grid;
+    grid-gap:0;
+    max-width: calc(100% -140px);
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 36px;
+    justify-items: stretch;
+    text-align: center;
+}
+
+.about__timeline-week {
+    color: #fff;
+    background-color: rgba(48, 48, 48, 1);
+    align-self: center;
+}
+
+.about__timeline-week:first-child {
+    color: #000;
+    background: rgba(61, 220, 132, 1);
+
+}
+
+.about__timeline-steps {
+    color: rgba(139, 139, 139, 1);
+}
+
+
+@media screen and (max-width: 980px) {
+    .main__about {
+        padding: 90px 50px;
+    }
+    .about__header-text {
+        margin-top: 22px;
+        font-size: 12px;
+        line-height:18px;
+    }
+    .about__timeline {
+        margin-top: 93px;
+    }  
+
+    .about__description {
+        max-width:360px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .about__description {
+        max-width:280px;
+    }
+}
+    
+@media screen and (max-width: 586px) {
+    .about__info {
+        flex-direction: column;
+        margin-top: 60px;
+    }
+
+    .main__about {
+        padding: 70px 18px;
+    }
+    .about__header-info {
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .about__header-text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .about__header-info {
+        margin: 16px 0;
+    }
+
+    .about__description:first-child {
+        padding-bottom: 30px;
+    }
+
+    .about__timeline {
+        margin-top: 60px;
+    }
+}
