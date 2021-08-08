@@ -6,36 +6,31 @@ import "./Toggle.css"
 function SearchForm (props) {
 
     function handleSubmit(e) {
-
         e.preventDefault();
-        // props.onUpdateUser({
-        //   name,
-        // });
+        props.isSearchActive(world);
       }
-      const [name, setName] = React.useState('Фильм');
+      const [world, setName] = React.useState('');
   
       function handleChangeName(e) {
           setName(e.target.value);
         }
 
-    const [isActive, setActive] = React.useState("false");
-
     function handleToggle() {
-        setActive(!isActive);
+        props.handleToggle();
     };
 
     return (
         <div className="movies__search">
             <div className="movies__search-content">
                 <form className="movies__search-form" name="movies__search-form" onSubmit={handleSubmit}>
-                    <input id="movies-name" name="movies-name" type="text" className="movies__search-input" placeholder="Фильм" minLength={2} maxLength={40} required value={name} onChange={handleChangeName}/>
+                    <input id="movies-name" name="movies-name" type="text" className="movies__search-input" placeholder="Фильм" minLength={2} maxLength={40} required value={world} onChange={handleChangeName}/>
                     <button type="submit" className="movies__button-found">Найти</button>
                 </form>
                 <div className="movies__search-form-toggle">
                     <Toggle
                     id="cheese-status"
                     className="movies__search-toggle"
-                    defaultChecked={isActive}
+                    defaultChecked={false}
                     onChange={handleToggle} 
                     icons={false} />
                     <label htmlFor="cheese-status" className="movies__search-label">Короткометражки</label>

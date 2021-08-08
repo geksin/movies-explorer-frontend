@@ -3,4 +3,11 @@
     background: #202020;
     font-family: Inter, Arial, sans-serif;
     color: #fff;
+    min-height: 400px;
+}
+
+.movies__text {
+    color: #999;
+    font-size:18px;
+    text-align: center;
 }

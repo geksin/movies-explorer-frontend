@@ -2,7 +2,7 @@ import React from 'react';
 import './Profile.css';
 
 function Profile (props) {
-
+    console.log (props);
     function editProfile () {
         console.log('editProfile');
     }
@@ -16,19 +16,19 @@ function Profile (props) {
     }
 
     function outProfile () {
-        console.log('outProfile');
+        props.singOut();
     }
 
     return (
         <main className="profile">
-            <h1 className="profile__header">Привет, Виталий {props.name}</h1>
+            <h1 className="profile__header">Привет, {props.user.user.name}</h1>
             <div className="profile__info">
                 <p className="profile__text">Имя</p>
-                <input id="profile-name" name="profile-name" type="text" value={'Виталий'} disabled className="profile__input" onChange={handleChangeName} />
+                <input id="profile-name" name="profile-name" type="text" value={props.user.user.name} disabled className="profile__input" onChange={handleChangeName} />
             </div>
             <div className="profile__info profile__info-last">
                 <p className="profile__text">E-mail</p>
-                <input id="profile-email" name="profile-email" type="text" value={'pochta@yandex.ru'} disabled className="profile__input" onChange={handleChangeEmail} />
+                <input id="profile-email" name="profile-email" type="text" value={props.user.user.email} disabled className="profile__input" onChange={handleChangeEmail} />
             </div>
             <div className="profile__link-control">
                 <button className="profile__link-edit" onClick={editProfile}>Редактировать</button>

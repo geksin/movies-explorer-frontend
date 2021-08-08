@@ -10,15 +10,12 @@ import burgerCloseMenuPath from '../../images/close.svg';
 
 function Header (props) {
 
-  // function handleSignOut() {
-  //   props.singOut();
-  // }
 
-  function handleSignIn () {
-    props.singIn();
+  function handleSignOut () {
+    props.singOut();
   }
 
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(true);
 
   function openMenu() {
     setIsMenuOpen(!isMenuOpen);
@@ -32,7 +29,7 @@ function Header (props) {
           <Link href="/" className="header__logo-link" target="_self"><img className="header__logo" src={headerLogoPath} alt="Логотип Дипломного проекта" /></Link>
             <div className="header__link">
               <Link to="/singup" className="header__signup_link">Регистрация</Link> 
-              <button to="/singin" className="header__signin_link" onClick={handleSignIn}>Войти</button> 
+              <Link to="/singin" className="header__signin_link">Войти</Link> 
             </div>
           </div>
         </header>

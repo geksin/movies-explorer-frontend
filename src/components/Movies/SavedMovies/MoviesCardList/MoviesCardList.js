@@ -1,11 +1,10 @@
 import React from 'react';
 import '../../MoviesCardList/MoviesCardList.css';
-import cards from '../../../../cards.js';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 
 
-function MoviesCardList () {
+function MoviesCardList (props) {
 
     function handleClickApp () {
         console.log('handleClickApp');
@@ -28,7 +27,7 @@ function MoviesCardList () {
     return (
         <>
             <div className="movies__cards-container">
-                {cards.map((item) => <MoviesCard 
+                {props.foundedMovies.map((item) => <MoviesCard 
                 key={item.id}
                 name={item.nameRU}
                 url={item.image.formats.thumbnail.url}

@@ -32,6 +32,7 @@
     margin-bottom: 24px;
     background:none;
     border-bottom: 1px solid #424242;
+    color: #fff;
 }
 
 .login__input:focus-visible {
