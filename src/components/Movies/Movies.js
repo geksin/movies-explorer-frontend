@@ -51,9 +51,16 @@ function Movies (props) {
         setFoundedMovies(foundMovies);
         setPreloaderShow(false);
         localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+        searchShortFilm(foundMovies);
     }
 
+    function searchShortFilm(arr) {
+        setShortMovies(arr.filter(item => item.duration <= 40));
+
+    }
     
+    const [shortMovies, setShortMovies] = useState([]);
+
 
 
     return (
@@ -61,7 +68,7 @@ function Movies (props) {
             <Header isAuth={props.isAuth} />
             <main className="movies">
                 <SearchForm isSearchActive={isSearchActive} handleToggle={handleToggle} />
-                {isSearch ? <MoviesCardList foundedMovies={foundedMovies} toggleActive={toggleActive} /> : <p className="movies__text">Введите что-то для поиска</p> }
+                {isSearch ? <MoviesCardList moviesShow={toggleActive ? shortMovies : foundedMovies} toggleActive={toggleActive} /> : <p className="movies__text">Введите что-то для поиска</p> }
                 {preloaderShow ? <Preloader /> : <p></p> }
                 
             </main>

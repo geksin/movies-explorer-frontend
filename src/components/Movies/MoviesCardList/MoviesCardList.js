@@ -7,6 +7,93 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList (props) {
 
+    const totalMovies = props.moviesShow.length
+
+    const [screenWidth, setScreenWidth] = useState(1280);
+    const [showBotton, setShowBotton] = useState(false);
+    const [moreButton, setMoreButton] = useState(0);
+
+
+    useEffect(() => {
+         const updateWidth = () => {
+            setScreenWidth(window.innerWidth);
+         }
+        
+         window.addEventListener("resize", updateWidth );
+
+         return () => {
+           window.removeEventListener("resize", updateWidth );
+         };
+       }, []);
+
+    function addMore () {
+        if (screenWidth => 1280) {
+            return setMoreButton(moreButton + 3);
+        } 
+        if (screenWidth > 480 && screenWidth < 1280) {
+            return setMoreButton(moreButton + 2);
+        } 
+        if (screenWidth > 480 && screenWidth < 1280) {
+            return setMoreButton(moreButton + 2);
+        } 
+    }
+
+
+    // const currentMovies = () =>  {
+    //     showBottons()
+    //     if (screenWidth => 1280) {
+    //         return (12 + moreButton);
+    //     }
+    //     if (screenWidth > 480 && screenWidth < 1280) {
+    //         return 8 + moreButton;
+    //     }
+        
+    //     if (screenWidth => 320 && screenWidth < 480) {
+    //         return 5 + moreButton;
+    //     }
+    // }
+
+    // const movies = props.moviesShow.slice(0, currentMovie));
+
+    let moviesShow1 = {};
+
+    function movies (screenWidth, moreButton) {
+        showBottons();
+        
+        if (isNaN(moreButton)) {
+            moreButton = 0;
+        }
+        if (screenWidth => 1280) {
+            return moviesShow1 = props.moviesShow.slice(0, 12 + moreButton);
+        }
+        if (screenWidth > 480 && screenWidth < 1280) {
+            return moviesShow1 = props.moviesShow.slice(0, 8 + moreButton);
+        }
+        if (screenWidth < 480) {
+            return moviesShow1 = props.moviesShow.slice(0, 5 + moreButton);
+        }
+    } 
+
+
+   function showBottons() {
+        if (movies < totalMovies)
+            {
+             setShowBotton(true);
+        } else {
+            setShowBotton(false);
+        }
+    }
+
+    useEffect(() => {
+        movies(screenWidth, moreButton);
+    })
+
+    console.log(screenWidth);
+    console.log(movies);
+    console.log(moviesShow1);
+    
+ 
+
     function handleClickApp () {
         console.log('handleClickApp');
     }
@@ -20,34 +107,31 @@ function MoviesCardList (props) {
         console.log('onDeleteCard');
     }
 
-    function onMoreCards () {
-        console.log('onDeleteCard');
-    }
-    const [shortMovies, setShortMovies] = useState([]);
-
-    useEffect(() => {
-        const moviesLocal = props.foundedMovies;
-        const arr = moviesLocal.filter(item => item.duration <= 40);
-        setShortMovies([arr]);
-    }, [props.foundedMovies]);
-
 
     return (
         <>
-        {props.foundedMovies.length === 0 ? <p className="movies__text">Ничего не найдено</p> : 
+        {totalMovies === 0 ? <p className="movies__text">Ничего не найдено</p> : 
             <div className="movies__cards-container">
-                {props.toggleActive ? (shortMovies) : (props.foundedMovies).map((item) => <MoviesCard 
-                key={item.id}
-                name={item.nameRU}
-                url={item.image.formats.thumbnail.url}
-                time={item.duration}
+                {moviesShow1.map((item) => <MoviesCard
+                key = {item.id}
+                movieId={item.id}
+                country={item.country}
+                director={item.director}
+                duration={item.duration}
+                year={item.year}
+                description={item.description}
+                image={item.image.url}
+                trailer={item.trailerLink}
+                nameRU={item.nameRU}
+                nameEN={item.nameEN}
+                thumbnail={item.image.formats.thumbnail.url}                
                 onCardClick={handleClickApp} 
                 onCardLike={onCardLikeApp} 
                 onDeleteCard={onDeleteCard} />)}
             </div>
         }
             <div className="movies__block-button-more">
-                <button type="button" className="movies__button-more" onClick={onMoreCards}>Ещё</button>
+                <button type="button" className={showBotton ? "movies__button-more" : "movies__button-hidden"} onClick={addMore}>Ещё</button>
             </div>
         </>
         );
@@ -55,57 +139,3 @@ function MoviesCardList (props) {
 
 export default MoviesCardList;
 
-
-// {
-//     "id": 1,
-//     "nameRU": "«Роллинг Стоунз» в изгнании",
-//     "nameEN": "Stones in Exile",
-//     "director": "Стивен Кайак ",
-//     "country": "США",
-//     "year": "2010",
-//     "duration": 61,
-//     "description": "В конце 1960-х группа «Роллинг Стоунз», несмотря на все свои мегахиты и сверхуспешные концертные туры, была разорена. Виной всему — бездарный менеджмент и драконовское налогообложение в Британии. Тогда музыканты приняли не самое простое для себя решение: летом 1971 года после выхода альбома «Stiсky Fingers» они отправились на юг Франции записывать новую пластинку. Именно там, на Лазурном Берегу, в арендованном Китом Ричардсом подвале виллы Неллькот родился сборник «Exile on Main St.», который стал лучшим альбомом легендарной группы.",
-//     "trailerLink": "https://www.youtube.com/watch?v=UXcqcdYABFw",
-//     "created_at": "2020-11-23T14:12:21.376Z",
-//     "updated_at": "2020-11-23T14:12:21.376Z",
-//     "image": {
-//         "id": 1,
-//         "name": "stones-in-exile",
-//         "alternativeText": "",
-//         "caption": "",
-//         "width": 512,
-//         "height": 279,
-//         "formats": {
-//             "thumbnail": {
-//                 "hash": "thumbnail_stones_in_exile_b2f1b8f4b7",
-//                 "ext": ".jpeg",
-//                 "mime": "image/jpeg",
-//                 "width": 245,
-//                 "height": 134,
-//                 "size": 8.79,
-//                 "path": null,
-//                 "url": "/uploads/thumbnail_stones_in_exile_b2f1b8f4b7.jpeg"
-//             },
-//             "small": {
-//                 "hash": "small_stones_in_exile_b2f1b8f4b7",
-//                 "ext": ".jpeg",
-//                 "mime": "image/jpeg",
-//                 "width": 500,
-//                 "height": 272,
-//                 "size": 25.68,
-//                 "path": null,
-//                 "url": "/uploads/small_stones_in_exile_b2f1b8f4b7.jpeg"
-//             }
-//         },
-//         "hash": "stones_in_exile_b2f1b8f4b7",
-//         "ext": ".jpeg",
-//         "mime": "image/jpeg",
-//         "size": 25.53,
-//         "url": "/uploads/stones_in_exile_b2f1b8f4b7.jpeg",
-//         "previewUrl": null,
-//         "provider": "local",
-//         "provider_metadata": null,
-//         "created_at": "2020-11-23T14:11:57.313Z",
-//         "updated_at": "2020-11-23T14:11:57.313Z"
-//     }
-// },
