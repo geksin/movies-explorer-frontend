@@ -6,9 +6,11 @@ import "./Toggle.css"
 function SearchForm (props) {
 
     function handleSubmit(e) {
+        props.isPreloader();
         e.preventDefault();
         props.isSearchActive(world);
       }
+      
       const [world, setName] = React.useState('');
   
       function handleChangeName(e) {

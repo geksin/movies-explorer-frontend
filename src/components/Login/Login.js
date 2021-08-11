@@ -5,7 +5,6 @@ import './Login.css';
 
 
 function Login(props) {
-  console.log(props.onLogin);
   const [userData, setUserData] = React.useState({email: '',password: ''});
 
   function handleChange(e) {

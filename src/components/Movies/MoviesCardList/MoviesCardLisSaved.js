@@ -1,13 +1,14 @@
 import React from 'react';
 import {useState, useEffect, useLayoutEffect} from 'react';
 import './MoviesCardList.css';
-import MoviesCard from '../MoviesCard/MoviesCard';
+import MoviesCard from '../MoviesCard/MoviesCardSaved';
 
 
 
 function MoviesCardList (props) {
 
     const totalMovies = props.moviesShow.length
+    console.log(props.moviesShow);
 
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [showBotton, setShowBotton] = useState(false);
@@ -78,29 +79,27 @@ function MoviesCardList (props) {
             setShowBotton(false);
         }
     }
-
-
+console.log(moviesShowNow);
 
     return (
         <>
         {totalMovies === 0 ? <p className="movies__text">Ничего не найдено</p> : 
             <div className="movies__cards-container">
                 {moviesShowNow.map((item) => <MoviesCard
-                savedFilm={props.savedFilm}
-                onSaveMovies={props.onSaveMovies}
-                key = {item.id}
-                movieId={item.id}
+                key = {item._id}
+                movieId={item._id}
                 country={item.country}
                 director={item.director}
                 duration={item.duration}
                 year={item.year}
                 description={item.description}
-                image={item.image.url}
+                image={item.image}
                 trailer={item.trailerLink}
                 nameRU={item.nameRU}
                 nameEN={item.nameEN}
-                thumbnail={item.image.formats.thumbnail.url}                
-                 />)}
+                thumbnail={item.thumbnail}
+                onDeleteMovies={props.onDeleteMovies} 
+                />)}
             </div>
         }
             <div className="movies__block-button-more">

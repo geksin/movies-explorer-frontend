@@ -11,10 +11,6 @@ import burgerCloseMenuPath from '../../images/close.svg';
 function Header (props) {
 
 
-  function handleSignOut () {
-    props.singOut();
-  }
-
   const [isMenuOpen, setIsMenuOpen] = React.useState(true);
 
   function openMenu() {

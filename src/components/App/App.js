@@ -10,33 +10,42 @@ import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../Movies/SavedMovies/SavedMovies';
 import ProtectedRoute from '../ProtectedRoute.js';
-import { Route, Switch, Redirect, withRouter, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
+import {useState, useEffect} from 'react';
 import * as auth from '../../utils/auth.js';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/mainApi.js';
-
+import * as movies from '../../utils/moviesApi';
+import Popup from '../Popup/Popup';
 
 function App() {
 
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [messagePopup, setMessagePopup] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
+  const [savedFilm, setSavedFilm] = useState([]);
+  const [allArrayMovies, setAllArrayMovies] = useState([]);
+  const [isAuth, setIsAuth] = useState(false);
+  const history = useHistory();
 
-  const [currentUser, setCurrentUser] = React.useState({});
 
-  React.useEffect(() => {
+function onClosePopup() {
+  setIsOpenPopup(!isOpenPopup);
+}
+
+
+  useEffect(() => {
     mainApi.getUserData()
       .then((values) => {
         setCurrentUser(values);
       })
       .catch((err) => {
-        console.log(err);
+        setIsOpenPopup(true)
+        setMessagePopup(err);
       })
   }, []);
 
-  console.log(currentUser);
-  
-  const [isAuth, setIsAuth] = React.useState(false);
-  const history = useHistory();
-
-  React.useEffect(() => {
+  useEffect(() => {
     tokenCheck();
   }, []);
 
@@ -58,7 +67,48 @@ function App() {
     }
   }
 
+  function onDeleteMovies(movieId) {
+    mainApi.deleteMovie(movieId)
+    .then((data) => setSavedFilm(data))
+    .catch((err) => {
+      setIsOpenPopup(true)
+      setMessagePopup(err);
+    })
+  }
 
+  function onSaveMovies(
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId
+  ) {
+    mainApi.saveMovie(  
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailer,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId)
+      .then((data) => {
+        setAllArrayMovies(data);
+      })
+      .catch((err) => {
+        setIsOpenPopup(true)
+        setMessagePopup(err);
+      });
+    }
 
   function singOut() {
     localStorage.removeItem('token');
@@ -74,9 +124,9 @@ function App() {
         history.push('/movies');
       }
       )
-      .catch(err => {
-        console.log(err);
-        // handlePopupToolTip();
+      .catch((err) => {
+        setIsOpenPopup(true)
+        setMessagePopup(err);
       });
   }
 
@@ -86,15 +136,34 @@ function App() {
         history.push('/singin');
       }
       )
-      .catch(err => {
-        console.log(err);
+      .catch((err) => {
+        setIsOpenPopup(true)
+        setMessagePopup(err);
       });
   }
+
+  // загружаем фильмы 
+
+  useEffect(() => {
+    Promise.all([mainApi.getSavedMovie(), movies.getMovies()])
+        .then(([savedMovies, allArrayMovies]) => {
+            setSavedFilm(savedMovies.movies);
+            setAllArrayMovies(allArrayMovies);
+        })
+        .catch((err) => {
+          setIsOpenPopup(true)
+          setMessagePopup(err);
+        });
+}, []);
 
   return (
       <>
       <CurrentUserContext.Provider value={currentUser} >
+
       <Switch>
+        <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} movies={allArrayMovies} onSaveMovies={onSaveMovies} savedFilm={savedFilm} />
+        <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies} onDeleteMovies={onDeleteMovies} movies={savedFilm} />
+        <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} user={currentUser} singOut={singOut} />
         <Route exact path="/">
           <Header isAuth={isAuth} />
           <Main />
@@ -106,16 +175,13 @@ function App() {
         <Route exact path='/singup'>
             <Register onLogin={authRegister} />
         </Route>
+        <Route exact path='/*' component={NotFound} />
       </Switch>
-      <Switch>
-        <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} />
-        <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies} />
-        <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} user={currentUser} singOut={singOut} />
-        <Route path='/*' component={NotFound} />
-      </Switch>
+      <Popup isOpen={isOpenPopup} onClose={onClosePopup} messagePopup={messagePopup} /> 
       </CurrentUserContext.Provider>
       </>
   );
 }
 
 export default App;
+

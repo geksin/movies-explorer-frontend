@@ -33,6 +33,7 @@
 
 .movies__button-hidden {
   display: none;
+  padding: 0;
 }
 
 .movies__button-more:hover {

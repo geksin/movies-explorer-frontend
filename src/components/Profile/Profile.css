@@ -60,14 +60,16 @@
     flex-direction:column;
     width: 410px;
     font-size: 13px;
+
 }
 
 .profile__link-edit {
     background:none;
     border:none;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     cursor: pointer;
     color: #fff;
+    height: 28px;
 }
 
 .profile__link-out {
@@ -76,6 +78,7 @@
     margin-bottom: 16px;
     cursor: pointer;
     color: #EE3465;
+    height: 28px;
 }
 
 .profile__link-out:hover, .profile__link-edit:hover {

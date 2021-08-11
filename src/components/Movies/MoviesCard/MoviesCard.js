@@ -1,8 +1,7 @@
-
+import {useLayoutEffect} from 'react';
 import React from 'react';
 import './MoviesCard.css'
 import pathIcon from '../../../images/icon_check.svg'
-import mainApi from '../../../utils/mainApi'
 
 
 function MoviesCard (props) {
@@ -17,8 +16,7 @@ function MoviesCard (props) {
     trailer,
     nameRU,
     nameEN,
-    thumbnail,  
-    onCardClick,
+    thumbnail,
   } = props;
   
   const URL_IMAGE = 'https://api.nomoreparties.co';
@@ -26,9 +24,9 @@ function MoviesCard (props) {
 
 const [isSaved, setIsSaved] = React.useState(false);
 
+
   function onCardSave() {
-    setIsSaved(!isSaved);
-    mainApi.saveMovie(    
+    props.onSaveMovies(  
       country,
       director,
       duration,
@@ -39,10 +37,21 @@ const [isSaved, setIsSaved] = React.useState(false);
       nameRU,
       nameEN,
       URL_IMAGE+thumbnail,
-      movieId)
-      .then(() => console.log("ок"))
+      movieId
+    );
+    setIsSaved(!isSaved);
   } 
 
+
+useLayoutEffect(() => {
+    function saved () {
+      if (props.savedFilm.some(item => item.movieId === movieId)) {
+        setIsSaved(true);
+      } else {
+        setIsSaved(false);
+      }}
+      saved ();
+  },[])
   
 
   return (
@@ -52,8 +61,8 @@ const [isSaved, setIsSaved] = React.useState(false);
                 <p className="card__name">{nameRU}</p>
                 <p className="card__time">{duration} минут</p>
             </div>
-            <img className="card__photo" src={URL_IMAGE+thumbnail} title={`Превью фильма ${nameRU} `} alt={`Превью фильма ${nameRU} `} onClick={onCardClick} />
-            <button type="button" className={ isSaved ? "card__button-save card__button-save-active" : "card__button-save"} onClick={onCardSave}>{ isSaved ? <img src={pathIcon} alt="Save" title="Сохранено" /> : "Сохранить" } </button>
+            <a href={trailer} target="_blank" rel="noreferrer"><img className="card__photo" src={URL_IMAGE+thumbnail} title={`Превью фильма ${nameRU} `} alt={`Превью фильма ${nameRU} `} /></a>
+            <button type="button" disabled={ isSaved ? true : false} className={ isSaved ? "card__button-save card__button-save-active" : "card__button-save"} onClick={onCardSave}>{ isSaved ? <img src={pathIcon} alt="Save" title="Сохранено" /> : "Сохранить" } </button>
         </article>
     </div>
   );
