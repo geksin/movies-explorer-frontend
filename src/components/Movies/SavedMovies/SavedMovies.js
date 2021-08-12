@@ -20,8 +20,6 @@ function SavedMovies (props) {
         setToggleActive(!toggleActive);
     };
 
-
-
     function isSearchActive(world) {
         setPreloaderShow(true);
         searchFilm(world);
@@ -41,7 +39,9 @@ function SavedMovies (props) {
         setPreloaderShow(false);
     }
 
-
+    useState(() => {
+        props.getMovies();
+    },[])
 
 
     return (

@@ -17,6 +17,7 @@ function MoviesCard (props) {
     nameRU,
     nameEN,
     thumbnail,
+    key,
   } = props;
   
   const URL_IMAGE = 'https://api.nomoreparties.co';
@@ -37,7 +38,7 @@ const [isSaved, setIsSaved] = React.useState(false);
       nameRU,
       nameEN,
       URL_IMAGE+thumbnail,
-      movieId
+      movieId,
     );
     setIsSaved(!isSaved);
   } 
@@ -45,7 +46,7 @@ const [isSaved, setIsSaved] = React.useState(false);
 
 useLayoutEffect(() => {
     function saved () {
-      if (props.savedFilm.some(item => item.movieId === movieId)) {
+      if (props.savedFilm.some(item => item.nameRU === nameRU)) {
         setIsSaved(true);
       } else {
         setIsSaved(false);
@@ -70,57 +71,3 @@ useLayoutEffect(() => {
 
 export default MoviesCard;
 
-
-
-// Export
-// const handlechangeMovieButtonStatus = (movie) => {
-//   const isSaved = savedMovies.some(item => item.movieId === movie.id);
-//   if (isSaved) {
-//       const savedMovie = savedMovies.find(item => item.movieId === movie.id);
-//       mainApi.deleteMovie(savedMovie._id, localStorage.getItem('token'))
-//           .then(() => {
-//               mainApi.getSavedMovies(localStorage.getItem('token'))
-//               .then((movies) => {
-//                   setSavedMovies(movies);
-//               });
-//           })  
-//           .catch((err) => console.log(`Ошибка: ${err}`))
-
-//   } else {
-//       const thumbnail = `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`;
-//       const movieId = movie.id;
-//       const trailer = movie.trailerLink;
-//       const image = `https://api.nomoreparties.co${movie.image.url}`
-//       const {
-//           country,
-//           director,
-//           duration,
-//           year,
-//           description,
-//           nameRU,
-//           nameEN,
-//       } = movie;
-
-//       mainApi.saveMovie({   
-//           country,
-//           director,
-//           duration,
-//           year,
-//           description,
-//           image,
-//           trailer,
-//           nameRU,
-//           nameEN,
-//           thumbnail,
-//           movieId,
-//       }, localStorage.getItem('token'))
-//       .then(() => {
-//           mainApi.getSavedMovies(localStorage.getItem('token'))
-//               .then((movies) => {
-//                   setSavedMovies(movies);
-//                   localStorage.setItem('savedMovies', JSON.stringify(movies));
-//           });
-//       })
-//       .catch((err) => console.log(`Ошибка: ${err}`))
-//   }
-// }

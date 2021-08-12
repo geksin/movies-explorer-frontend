@@ -70,22 +70,26 @@ function MoviesCardList (props) {
    function showBottons() {
        if (props.moviesShow < 5 ) {
         setShowBotton(false);
-       }
-        if (moviesShowNow < totalMovies)
+         }
+        if (moviesShowNow.length < totalMovies)
             {
              setShowBotton(true);
-        } else {
+            } 
+        if (moviesShowNow.length === totalMovies)
+            {
             setShowBotton(false);
         }
     }
-
-
+    console.log(moviesShowNow.length);
+    console.log(totalMovies);
+    
 
     return (
         <>
         {totalMovies === 0 ? <p className="movies__text">Ничего не найдено</p> : 
             <div className="movies__cards-container">
                 {moviesShowNow.map((item) => <MoviesCard
+                user={props.user}
                 savedFilm={props.savedFilm}
                 onSaveMovies={props.onSaveMovies}
                 key = {item.id}

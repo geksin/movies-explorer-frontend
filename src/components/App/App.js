@@ -11,7 +11,7 @@ import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../Movies/SavedMovies/SavedMovies';
 import ProtectedRoute from '../ProtectedRoute.js';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useLayoutEffect} from 'react';
 import * as auth from '../../utils/auth.js';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/mainApi.js';
@@ -33,19 +33,14 @@ function onClosePopup() {
   setIsOpenPopup(!isOpenPopup);
 }
 
-
   useEffect(() => {
     mainApi.getUserData()
-      .then((values) => {
-        setCurrentUser(values);
-      })
-      .catch((err) => {
-        setIsOpenPopup(true)
-        setMessagePopup(err);
-      })
-  }, []);
-
-  useEffect(() => {
+    .then((userData) => {
+        setCurrentUser(userData);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
     tokenCheck();
   }, []);
 
@@ -72,7 +67,7 @@ function onClosePopup() {
     .then((data) => setSavedFilm(data))
     .catch((err) => {
       setIsOpenPopup(true)
-      setMessagePopup(err);
+      setMessagePopup("Ошибка сервера");
     })
   }
 
@@ -106,7 +101,7 @@ function onClosePopup() {
       })
       .catch((err) => {
         setIsOpenPopup(true)
-        setMessagePopup(err);
+        setMessagePopup("Ошибка сервера");
       });
     }
 
@@ -138,31 +133,30 @@ function onClosePopup() {
       )
       .catch((err) => {
         setIsOpenPopup(true)
-        setMessagePopup(err);
+        setMessagePopup("Ошибка сервера");
       });
   }
 
   // загружаем фильмы 
 
-  useEffect(() => {
+  function getMovies() {
     Promise.all([mainApi.getSavedMovie(), movies.getMovies()])
         .then(([savedMovies, allArrayMovies]) => {
-            setSavedFilm(savedMovies.movies);
+            setSavedFilm(savedMovies.movies.filter(movie => movie.owner === currentUser.user._id));
             setAllArrayMovies(allArrayMovies);
         })
         .catch((err) => {
-          setIsOpenPopup(true)
-          setMessagePopup(err);
+            console.log(err);
         });
-}, []);
+};
 
   return (
       <>
       <CurrentUserContext.Provider value={currentUser} >
 
       <Switch>
-        <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} movies={allArrayMovies} onSaveMovies={onSaveMovies} savedFilm={savedFilm} />
-        <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies} onDeleteMovies={onDeleteMovies} movies={savedFilm} />
+        <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} getMovies={getMovies} user={currentUser} movies={allArrayMovies} onSaveMovies={onSaveMovies} savedFilm={savedFilm} />
+        <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies} getMovies={getMovies} onDeleteMovies={onDeleteMovies} movies={savedFilm} />
         <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} user={currentUser} singOut={singOut} />
         <Route exact path="/">
           <Header isAuth={isAuth} />
@@ -173,7 +167,7 @@ function onClosePopup() {
             <Login onLogin={authLogin} />
         </Route>
         <Route exact path='/singup'>
-            <Register onLogin={authRegister} />
+            <Register onRegister={authRegister} />
         </Route>
         <Route exact path='/*' component={NotFound} />
       </Switch>

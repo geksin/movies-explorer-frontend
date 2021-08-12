@@ -25,7 +25,7 @@ export const login = (email, password) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then(response => response.ok ? response.json() : Promise.reject(`Ошибка ${response.status}`)) 
+  .then((response) => response.ok ? response.json() : Promise.reject(`Ошибка ${response.status}`)) 
   .then((data) => {
       localStorage.setItem('token', data.token);
       return data;

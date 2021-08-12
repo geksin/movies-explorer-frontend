@@ -9,7 +9,7 @@ import MoviesCardList from './MoviesCardList/MoviesCardList';
 
 
 
-function Movies ({movies, isAuth, savedFilm, onSaveMovies}) {
+function Movies ({movies, isAuth, savedFilm, onSaveMovies, user, getMovies}) {
 
     const [preloaderShow, setPreloaderShow] = useState(false);
     const [isSearch, setIsSearch] = useState(false);
@@ -30,6 +30,10 @@ function Movies ({movies, isAuth, savedFilm, onSaveMovies}) {
     function isPreloader() {
         setPreloaderShow(true);
     }
+
+    useState(() => {
+        getMovies();
+    },[])
 
 
 // поиск фильма по слову
@@ -57,7 +61,7 @@ function Movies ({movies, isAuth, savedFilm, onSaveMovies}) {
             <main className="movies">
                 <SearchForm isSearchActive={isSearchActive} handleToggle={handleToggle} isPreloader={isPreloader} />
 
-                {isSearch ? <MoviesCardList moviesShow={toggleActive ? shortMovies : foundedMovies} savedFilm={savedFilm} toggleActive={toggleActive} onSaveMovies={onSaveMovies} /> : <p className="movies__text">Введите что-то для поиска</p> }
+                {isSearch ? <MoviesCardList moviesShow={toggleActive ? shortMovies : foundedMovies} user={user} savedFilm={savedFilm} toggleActive={toggleActive} onSaveMovies={onSaveMovies} /> : <p className="movies__text">Введите что-то для поиска</p> }
                 {preloaderShow ? <Preloader /> : <div></div> }
                 
             </main>
