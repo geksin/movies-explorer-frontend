@@ -80,8 +80,7 @@ function MoviesCardList (props) {
             setShowBotton(false);
         }
     }
-    console.log(moviesShowNow.length);
-    console.log(totalMovies);
+
     
 
     return (

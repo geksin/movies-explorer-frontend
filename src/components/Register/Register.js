@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import '../Login/Login.css';
+import Preloader from '../Preloader/Preloader'
 import {useState, useCallback} from 'react';
 
 function Register(props) {
@@ -46,6 +47,7 @@ function Register(props) {
             <h1 className="login__header">
                 Добро пожаловать!
             </h1>
+            {props.isPreloaderRun ? <Preloader /> : ""}
             <form className="login__form">
                 <label className="login__label">Имя</label>
                 <span className="login__input-error">{err.name}</span>

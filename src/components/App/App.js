@@ -21,8 +21,9 @@ import Popup from '../Popup/Popup';
 function App() {
 
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [isPreloaderRun, setIsPreloaderRun] = useState(false);
   const [messagePopup, setMessagePopup] = useState("");
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState({_id: '', name:'', email:''});
   const [savedFilm, setSavedFilm] = useState([]);
   const [allArrayMovies, setAllArrayMovies] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
@@ -33,38 +34,41 @@ function onClosePopup() {
   setIsOpenPopup(!isOpenPopup);
 }
 
-  useEffect(() => {
-    mainApi.getUserData()
-    .then((userData) => {
-        setCurrentUser(userData);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-    tokenCheck();
-  }, []);
-
-  function handleLogin(token) {
-    setIsAuth(true);
-    tokenCheck();
-  }
   
 
-  function tokenCheck() {
+useLayoutEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       auth.checkToken(token).then((res) => {
         if (res) {
-          setIsAuth(true);
-          history.push('/movies');
+          mainApi.getUserData(token)
+          .then((data) => {
+              setCurrentUser(data);
+              setIsAuth(true);
+              history.push('/movies');
+              mainApi.getSavedMovie()
+              .then((savedMovies) => {
+                setSavedFilm(savedMovies.movies.filter(movie => movie.owner === data.user._id))
+                localStorage.setItem('savedMovies', JSON.stringify(savedFilm));
+                console.log(savedFilm); 
+              })
+              .catch((err) => {
+              console.log(err);
+            });
+          })
+          .catch((err) => console.log(err))
         }
-      });
+      })
+      .catch((err) => console.log(err))
     }
-  }
+  }, []);
+
 
   function onDeleteMovies(movieId) {
     mainApi.deleteMovie(movieId)
-    .then((data) => setSavedFilm(data))
+    .then((data) => {
+      setSavedFilm(data);
+      localStorage.setItem('savedMovies', JSON.stringify(data));})
     .catch((err) => {
       setIsOpenPopup(true)
       setMessagePopup("Ошибка сервера");
@@ -97,11 +101,12 @@ function onClosePopup() {
       thumbnail,
       movieId)
       .then((data) => {
-        setAllArrayMovies(data);
+        savedFilm.push(...[data.movie]);
       })
       .catch((err) => {
-        setIsOpenPopup(true)
-        setMessagePopup("Ошибка сервера");
+        setIsOpenPopup(true);
+        console.log(err);
+        setMessagePopup("Ошибка сервера сохранения ");
       });
     }
 
@@ -111,69 +116,130 @@ function onClosePopup() {
     history.push('/singin')
   } 
 
+  // пользователь
+
+
+  function editProfile (data) {
+    setIsPreloaderRun(true);
+      mainApi.editProfile(data)
+      .then((data) => {
+        setCurrentUser(data);
+        setMessagePopup('Данные успешно сохранены');
+        setIsOpenPopup(true);
+      })
+      .catch((err) => {
+        if (err === 'Ошибка 401') {
+          setIsOpenPopup(true)
+          setMessagePopup("Что-то пошло не так");
+      }}
+      )
+      .finally(() => {
+        setIsPreloaderRun(false);
+      })
+    }
+
+
 
   function authLogin(email, password) {
-    auth.login(email, password)
+    setIsPreloaderRun(true);
+    return auth.login(email, password)
       .then((data) => {
-        handleLogin(data);
-        history.push('/movies');
+        console.log(data);
+        if (!data) throw new Error ('При авторизации произошла ошибка')
+        if (data.token) {
+          console.log(data.token);
+          localStorage.setItem('token', data.token);
+          mainApi.getUserData(data.token)
+          .then((data) => {
+              setCurrentUser(data);
+              setIsAuth(true);
+              history.push('/movies');
+          })
+          .catch((err) => {
+              console.log(err);
+          });
+        }
       }
       )
       .catch((err) => {
-        setIsOpenPopup(true)
-        setMessagePopup(err);
-      });
+        if (err === 'Ошибка 401') {
+            setIsOpenPopup(true)
+           setMessagePopup("Проверьте логин или пароль");
+        }
+        else {
+          setIsOpenPopup(true)
+          setMessagePopup(err);
+        }
+        console.log(err);
+      })
+      .finally(() => {
+        setIsPreloaderRun(false);
+      })
   }
 
   function authRegister(name, email, password) {
+    setIsPreloaderRun(true);
     auth.register(name, email, password)
       .then((data) => {
-        history.push('/singin');
+        console.log(data);
+        authLogin(email, password);
       }
       )
       .catch((err) => {
-        setIsOpenPopup(true)
-        setMessagePopup("Ошибка сервера");
-      });
+        console.log(err);
+        if (err === 'Ошибка 409') {
+          setIsOpenPopup(true)
+         setMessagePopup("Пользователь с таким емейлом уже зарегистрирован");
+         }
+        if (err === 'Ошибка 400') {
+          setIsOpenPopup(true)
+        setMessagePopup("Что-то введено не так");
+        }
+      })
+      .finally(() => {
+        setIsPreloaderRun(false);
+      })
   }
 
   // загружаем фильмы 
 
-  function getMovies() {
-    Promise.all([mainApi.getSavedMovie(), movies.getMovies()])
-        .then(([savedMovies, allArrayMovies]) => {
-            setSavedFilm(savedMovies.movies.filter(movie => movie.owner === currentUser.user._id));
+
+
+    useEffect(() => {
+      movies.getMovies()
+          .then((allArrayMovies) => {
             setAllArrayMovies(allArrayMovies);
-        })
-        .catch((err) => {
-            console.log(err);
+            localStorage.setItem('movies', JSON.stringify(allArrayMovies));
+          })
+          .catch((err) => {
+          console.log(err);
         });
-};
+    }, []);
+
+
+
 
   return (
-      <>
       <CurrentUserContext.Provider value={currentUser} >
-
-      <Switch>
-        <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} getMovies={getMovies} user={currentUser} movies={allArrayMovies} onSaveMovies={onSaveMovies} savedFilm={savedFilm} />
-        <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies} getMovies={getMovies} onDeleteMovies={onDeleteMovies} movies={savedFilm} />
-        <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} user={currentUser} singOut={singOut} />
-        <Route exact path="/">
-          <Header isAuth={isAuth} />
-          <Main />
-          <Footer />
-        </Route>
-        <Route exact path='/singin'>
-            <Login onLogin={authLogin} />
-        </Route>
-        <Route exact path='/singup'>
-            <Register onRegister={authRegister} />
-        </Route>
-        <Route exact path='/*' component={NotFound} />
-      </Switch>
-      <Popup isOpen={isOpenPopup} onClose={onClosePopup} messagePopup={messagePopup} /> 
+        <Switch>
+          <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} user={currentUser} onSaveMovies={onSaveMovies} savedFilm={savedFilm} />
+          <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies}  user={currentUser} onDeleteMovies={onDeleteMovies} savedFilm={savedFilm} />
+          <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} isPreloaderRun={isPreloaderRun} editProfile={editProfile} user={currentUser} singOut={singOut} />
+          <Route exact path="/">
+            <Header isAuth={isAuth} />
+            <Main />
+            <Footer />
+          </Route>
+          <Route exact path='/singin'>
+              <Login onLogin={authLogin} isPreloaderRun={isPreloaderRun} />
+          </Route>
+          <Route exact path='/singup'>
+              <Register onRegister={authRegister} isPreloaderRun={isPreloaderRun} />
+          </Route>
+          <Route exact path='/*' component={NotFound} />
+        </Switch>
+        <Popup isOpen={isOpenPopup} onClose={onClosePopup} messagePopup={messagePopup} /> 
       </CurrentUserContext.Provider>
-      </>
   );
 }
 

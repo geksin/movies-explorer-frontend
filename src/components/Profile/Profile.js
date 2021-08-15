@@ -1,40 +1,53 @@
 import React from 'react';
 import './Profile.css';
-import mainApi from '../../utils/mainApi'
+import {useState, useCallback} from 'react';
+import Preloader from '../Preloader/Preloader'
 
 function Profile (props) {
     
     const [profileEditing, setProfileEditing] = React.useState(false);
-    const [name, setName] = React.useState(props.user.user.name);
-    const [email, setEmail] = React.useState(props.user.user.email);
-    const [password, setPassword] = React.useState('');
+    const [userData, setUserData] = useState({name: props.user.user.name, email: props.user.user.email ,password: ''});
+    const [err, setErr] = useState({});
+    const [isValid, setIsValid] = useState(false);
 
+    function handleChange(e) {
+        const {name, value} = e.target;
+        setUserData({
+          ...userData,
+          [name]: value
+        })
+        setErr({...err, [name]: e.target.validationMessage });
+        setIsValid(e.target.closest("form").checkValidity());
+      }
+      const resetForm = useCallback(
+        (newData = {
+            name: '',
+            email: '',
+            password: '',
+        }, newErrors = {}, newIsValid = false) => {
+          setUserData(newData);
+          setErr(newErrors);
+          setIsValid(newIsValid);
+        },
+        [userData, err, isValid],
+      );
 
 
     function editProfile () {
-        if (setProfileEditing) {
-            mainApi.editProfile({name, email, password})
-            .then((data) => {
-                setName(data.name);
-                setEmail(data.email);
-            })
-            .catch((err) => {console.log(err);})
-        }
         setProfileEditing(!profileEditing);
     }
 
+    function submitForm (e) {
+        e.preventDefault();
+        if (!userData.name || !userData.email || !userData.password){
+          console.log("error")
+          return;
+        }
+        props.editProfile(userData);
+        setProfileEditing(false);
 
-    function handleChangeName (e) {
-        setName(e.target.value);
     }
 
-    function handleChangeEmail (e) {
-        setEmail(e.target.value);
-    }
-
-    function handleChangePassword (e) {
-        setPassword(e.target.value);
-    }
 
     function outProfile () {
         props.singOut();
@@ -42,24 +55,33 @@ function Profile (props) {
 
     return (
         <main className="profile">
-            <h1 className="profile__header">Привет, {props.user.user.name}</h1>
-            <div className="profile__info">
-                <p className="profile__text">Имя</p>
-                <input id="profile-name" name="profile-name" type="text" value={name} disabled={profileEditing ? false : true} className="profile__input" onChange={handleChangeName} />
-            </div>
-            <div className="profile__info" >
-                <p className="profile__text">E-mail</p>
-                <input id="profile-email" name="profile-email" type="text" value={email} disabled={profileEditing ? false : true} className="profile__input" onChange={handleChangeEmail} />
-            </div>
-            <div className="profile__info profile__info-last" style={profileEditing ? {display: 'flex'} : {display: 'none'} }>
-                <p className="profile__text">Введите новый пароль</p>
-                <input id="profile-password" name="profile-password" type="password" disabled={profileEditing ? false : true} className="profile__input" onChange={handleChangePassword} />
-            </div>
-            <div className="profile__link-control">
-                <button className="profile__link-edit" onClick={editProfile}> {profileEditing ? "Сохранить" : "Редактировать" }</button>
-                <button className="profile__link-out" onClick={outProfile}>Выйти из аккаунта</button>
-            </div>
-        </main>
+            <h1 className="profile__header">Привет, {userData.name}</h1>
+            <form className="profile__form" >
+            {props.isPreloaderRun ? <Preloader /> : ""}
+                <div className="profile__info">
+                    <p className="profile__text">Имя</p>
+                    <span className="profile__info-error">{err.name}</span>
+                    <input id="profile-name"  minLength={2} maxLength={40} required name="name" type="text" value={userData.name} disabled={profileEditing ? false : true} className="profile__input" onChange={handleChange} />
+                </div>
+                
+                <div className="profile__info" >
+                    <p className="profile__text">E-mail<span className="profile__info-error">{err.email}</span></p>
+                    <input id="profile-email"  minLength={2} maxLength={40} required name="email" type="email" value={userData.email} disabled={profileEditing ? false : true} className="profile__input" onChange={handleChange} />
+                </div>
+                
+                <div className="profile__info profile__info-last" style={profileEditing ? {display: 'flex'} : {display: 'none'} }>
+                    <p className="profile__text">Введите новый старый пароль <span className="profile__info-error">{err.password}</span></p>
+                    <input id="profile-password" name="password" required type="password" disabled={profileEditing ? false : true} className="profile__input" onChange={handleChange} />
+                </div>
+                
+                <div className="profile__link-control">
+                    <button className="profile__link-edit" type="button" onClick={editProfile} >{profileEditing ? "Отменить" : "Редактировать"} </button>
+                    {profileEditing ? <button className="profile__link-edit" type="submit" onClick={submitForm}>Сохранить</button> : ""}
+                    <button className="profile__link-out" onClick={outProfile}>Выйти из аккаунта</button>
+                </div>
+            </form>
+        </main> 
+        
         );
 }
 

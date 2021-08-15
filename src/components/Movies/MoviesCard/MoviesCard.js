@@ -2,6 +2,8 @@ import {useLayoutEffect} from 'react';
 import React from 'react';
 import './MoviesCard.css'
 import pathIcon from '../../../images/icon_check.svg'
+import mainApi from '../../../utils/mainApi';
+
 
 
 function MoviesCard (props) {
@@ -45,13 +47,12 @@ const [isSaved, setIsSaved] = React.useState(false);
 
 
 useLayoutEffect(() => {
-    function saved () {
-      if (props.savedFilm.some(item => item.nameRU === nameRU)) {
-        setIsSaved(true);
-      } else {
-        setIsSaved(false);
-      }}
-      saved ();
+          if (props.savedFilm.some(item => item.nameRU === nameRU)) {
+            setIsSaved(true);
+          } else {
+            setIsSaved(false);
+          }
+        
   },[])
   
 

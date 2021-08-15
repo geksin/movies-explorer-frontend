@@ -4,13 +4,14 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import './Movies.css';
 import SearchForm from './SearchForm/SearchForm';
-import Preloader from './Preloader/Preloader';
+import Preloader from '../Preloader/Preloader';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
 
 
 
-function Movies ({movies, isAuth, savedFilm, onSaveMovies, user, getMovies}) {
+function Movies ({isAuth, savedFilm, onSaveMovies, user, getMovies}) {
 
+    const movies = JSON.parse(localStorage.movies);
     const [preloaderShow, setPreloaderShow] = useState(false);
     const [isSearch, setIsSearch] = useState(false);
     const [foundedMovies, setFoundedMovies] = useState([]);
@@ -30,11 +31,6 @@ function Movies ({movies, isAuth, savedFilm, onSaveMovies, user, getMovies}) {
     function isPreloader() {
         setPreloaderShow(true);
     }
-
-    useState(() => {
-        getMovies();
-    },[])
-
 
 // поиск фильма по слову
     function searchFilm (world) {

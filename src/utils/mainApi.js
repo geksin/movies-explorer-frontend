@@ -13,10 +13,10 @@ class Api {
   }
 
 
-  getUserData() {
+  getUserData(token) {
       return fetch(`${this._address}/users/me`, {
         headers: {
-          authorization: this._token
+          authorization: `Bearer ${token}`
         }
       })
       .then((res) => this._returnServerResponse(res))

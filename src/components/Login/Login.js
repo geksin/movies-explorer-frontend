@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import './Login.css';
 import {useState, useCallback} from 'react';
+import Preloader from '../Preloader/Preloader'
 
 
 
@@ -55,6 +56,7 @@ function Login(props) {
                 <span className="login__input-error">{err.password}</span>
                 <input className="login__input" required id="password" name="password" type="password" placeholder="" value={userData.password} onChange={handleChange} />
               <div className="login__button-container">
+              {props.isPreloaderRun ? <Preloader /> : ""}
                   <button type="submit" className="login__button" disabled={isValid ? false : true} >Войти</button>
                   <p className="login__text">Ещё не зарегистрированы?<Link to="/singup" className="login__link-singup" title="ссылка для регистрации">Регистрация</Link></p>
               </div>
