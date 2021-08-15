@@ -25,7 +25,7 @@ function App() {
   const [messagePopup, setMessagePopup] = useState("");
   const [currentUser, setCurrentUser] = useState({_id: '', name:'', email:''});
   const [savedFilm, setSavedFilm] = useState([]);
-  const [allArrayMovies, setAllArrayMovies] = useState([]);
+  // const [allArrayMovies, setAllArrayMovies] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
   const history = useHistory();
 
@@ -50,7 +50,6 @@ useLayoutEffect(() => {
               .then((savedMovies) => {
                 setSavedFilm(savedMovies.movies.filter(movie => movie.owner === data.user._id))
                 localStorage.setItem('savedMovies', JSON.stringify(savedFilm));
-                console.log(savedFilm); 
               })
               .catch((err) => {
               console.log(err);
@@ -113,7 +112,7 @@ useLayoutEffect(() => {
   function singOut() {
     localStorage.removeItem('token');
     setIsAuth(false);
-    history.push('/singin')
+    history.push('/')
   } 
 
   // пользователь
@@ -147,7 +146,6 @@ useLayoutEffect(() => {
         console.log(data);
         if (!data) throw new Error ('При авторизации произошла ошибка')
         if (data.token) {
-          console.log(data.token);
           localStorage.setItem('token', data.token);
           mainApi.getUserData(data.token)
           .then((data) => {
@@ -180,8 +178,7 @@ useLayoutEffect(() => {
   function authRegister(name, email, password) {
     setIsPreloaderRun(true);
     auth.register(name, email, password)
-      .then((data) => {
-        console.log(data);
+      .then(() => {
         authLogin(email, password);
       }
       )
@@ -206,14 +203,18 @@ useLayoutEffect(() => {
 
 
     useEffect(() => {
-      movies.getMovies()
-          .then((allArrayMovies) => {
-            setAllArrayMovies(allArrayMovies);
-            localStorage.setItem('movies', JSON.stringify(allArrayMovies));
-          })
-          .catch((err) => {
-          console.log(err);
-        });
+      if (localStorage.getItem('movies')) {
+        return
+      } else {
+        movies.getMovies()
+            .then((allArrayMovies) => {
+              // setAllArrayMovies(allArrayMovies);
+              localStorage.setItem('movies', JSON.stringify(allArrayMovies));
+            })
+            .catch((err) => {
+            console.log(err);
+          });
+      }
     }, []);
 
 

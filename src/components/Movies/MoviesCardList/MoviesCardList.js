@@ -46,41 +46,41 @@ function MoviesCardList (props) {
             moreButton = 0;
         }
         if (screenWidth >= 1280) {
-            setMoviesShowNow(props.moviesShow.slice(0, 12 + moreButton))
+            const movieArr = props.moviesShow.slice(0, 12 + moreButton)
+            setMoviesShowNow(movieArr);
+            showBottons(movieArr.length);
         }
         if (screenWidth > 480 && screenWidth < 1280) {
-            setMoviesShowNow(props.moviesShow.slice(0, 8 + moreButton))
+            const movieArr = props.moviesShow.slice(0, 8 + moreButton)
+            setMoviesShowNow(movieArr);
+            showBottons(movieArr.length);
         }
         if (screenWidth < 480) {
-            setMoviesShowNow(props.moviesShow.slice(0, 5 + moreButton))
+            const movieArr = props.moviesShow.slice(0, 5 + moreButton)
+            setMoviesShowNow(movieArr);
+            showBottons(movieArr.length);
         }
     } 
 
     useEffect(() => {
         movies(screenWidth, moreButton);
-        showBottons();
     },[moreButton])
 
     useEffect(() => {
         movies(screenWidth, moreButton);
-        showBottons();
     },[props.moviesShow])
 
 
-   function showBottons() {
-       if (props.moviesShow < 5 ) {
-        setShowBotton(false);
-         }
-        if (moviesShowNow.length < totalMovies)
+
+    function showBottons (arr) {
+        if (
+            ((arr + moreButton) < totalMovies))
             {
-             setShowBotton(true);
-            } 
-        if (moviesShowNow.length === totalMovies)
-            {
+                setShowBotton(true);
+        } else {
             setShowBotton(false);
         }
     }
-
     
 
     return (

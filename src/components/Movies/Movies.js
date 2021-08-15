@@ -22,6 +22,11 @@ function Movies ({isAuth, savedFilm, onSaveMovies, user, getMovies}) {
         setToggleActive(!toggleActive);
     };
 
+    React.useEffect(() => {
+        if (localStorage.getItem('foundMovies')) {
+            setFoundedMovies(JSON.parse(localStorage.foundMovies));
+        }
+    }, [])
 
     function isSearchActive(world) {
         setIsSearch(true);
@@ -32,7 +37,7 @@ function Movies ({isAuth, savedFilm, onSaveMovies, user, getMovies}) {
         setPreloaderShow(true);
     }
 
-// поиск фильма по слову
+// поиск фильма 
     function searchFilm (world) {
         const foundMovies = movies.filter(function(a) {
             if (a.nameEN === null) {
@@ -49,7 +54,7 @@ function Movies ({isAuth, savedFilm, onSaveMovies, user, getMovies}) {
     function searchShortFilm(arr) {
         setShortMovies(arr.filter(item => item.duration <= 40));
     }
-    
+
 
     return (
         <>

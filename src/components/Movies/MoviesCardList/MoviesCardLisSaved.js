@@ -47,22 +47,20 @@ function MoviesCardList (props) {
             moreButton = 0;
         }
         if (screenWidth >= 1280) {
-            setMoviesShowNow(props.moviesShow.slice(0, 12 + moreButton))
+            const movieArr = props.moviesShow.slice(0, 12 + moreButton)
+            setMoviesShowNow(movieArr);
+            showBottons(movieArr.length);
         }
         if (screenWidth > 480 && screenWidth < 1280) {
-            setMoviesShowNow(props.moviesShow.slice(0, 8 + moreButton))
+            const movieArr = props.moviesShow.slice(0, 8 + moreButton)
+            setMoviesShowNow(movieArr);
+            showBottons(movieArr.length);
         }
         if (screenWidth < 480) {
-            setMoviesShowNow(props.moviesShow.slice(0, 5 + moreButton))
+            const movieArr = props.moviesShow.slice(0, 5 + moreButton)
+            setMoviesShowNow(movieArr);
+            showBottons(movieArr.length);
         }
-        if (moviesShowNow.length < totalMovies)
-        {
-            setShowBotton(true);
-        } 
-        if (moviesShowNow.length === totalMovies)
-        {
-            setShowBotton(false);
-    } 
     } 
 
     useEffect(() => {
@@ -74,6 +72,15 @@ function MoviesCardList (props) {
     },[props.moviesShow])
 
 
+    function showBottons (arr) {
+        if (
+            ((arr + moreButton) < totalMovies))
+            {
+                setShowBotton(true);
+        } else {
+            setShowBotton(false);
+        }
+    }
 
     return (
         <>

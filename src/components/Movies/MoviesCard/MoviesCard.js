@@ -2,7 +2,6 @@ import {useLayoutEffect} from 'react';
 import React from 'react';
 import './MoviesCard.css'
 import pathIcon from '../../../images/icon_check.svg'
-import mainApi from '../../../utils/mainApi';
 
 
 
@@ -29,6 +28,9 @@ const [isSaved, setIsSaved] = React.useState(false);
 
 
   function onCardSave() {
+    if (country === null) {
+      return alert('Невозможно сохранить фильм из-за неуказаной страны')
+    }
     props.onSaveMovies(  
       country,
       director,
@@ -47,18 +49,17 @@ const [isSaved, setIsSaved] = React.useState(false);
 
 
 useLayoutEffect(() => {
-          if (props.savedFilm.some(item => item.nameRU === nameRU)) {
-            setIsSaved(true);
-          } else {
-            setIsSaved(false);
-          }
-        
+    if (props.savedFilm.some(item => item.nameRU === nameRU)) {
+      setIsSaved(true);
+    } else {
+      setIsSaved(false);
+    }
   },[])
   
 
   return (
-    <div className="card__template"  >
-        <article className="card__template-article" key={movieId}>
+    <div className="card__template" >
+        <article className="card__template-article" key={key}>
             <div className="card__up-part">
                 <p className="card__name">{nameRU}</p>
                 <p className="card__time">{duration} минут</p>

@@ -18,7 +18,11 @@ function Profile (props) {
         })
         setErr({...err, [name]: e.target.validationMessage });
         setIsValid(e.target.closest("form").checkValidity());
+        if (userData.name === props.user.user.name && userData.email === props.user.user.email ) {
+            setIsValid(false);
+        }
       }
+      
       const resetForm = useCallback(
         (newData = {
             name: '',
@@ -70,7 +74,7 @@ function Profile (props) {
                 </div>
                 
                 <div className="profile__info profile__info-last" style={profileEditing ? {display: 'flex'} : {display: 'none'} }>
-                    <p className="profile__text">Введите новый старый пароль <span className="profile__info-error">{err.password}</span></p>
+                    <p className="profile__text">Введите новый/старый пароль <span className="profile__info-error">{err.password}</span></p>
                     <input id="profile-password" name="password" required type="password" disabled={profileEditing ? false : true} className="profile__input" onChange={handleChange} />
                 </div>
                 
