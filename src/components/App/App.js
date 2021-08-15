@@ -36,7 +36,7 @@ function onClosePopup() {
 
   
 
-useLayoutEffect(() => {
+useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       auth.checkToken(token).then((res) => {
@@ -45,7 +45,6 @@ useLayoutEffect(() => {
           .then((data) => {
               setCurrentUser(data);
               setIsAuth(true);
-              history.push('/movies');
               mainApi.getSavedMovie()
               .then((savedMovies) => {
                 setSavedFilm(savedMovies.movies.filter(movie => movie.owner === data.user._id))
