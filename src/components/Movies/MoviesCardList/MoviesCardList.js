@@ -81,7 +81,6 @@ function MoviesCardList (props) {
             setShowBotton(false);
         }
     }
-    console.log(moviesShowNow)
 
     return (
         <>

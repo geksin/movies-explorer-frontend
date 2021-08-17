@@ -35,34 +35,36 @@ function onClosePopup() {
   setIsOpenPopup(!isOpenPopup);
 }
 
-  
 
-useLayoutEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      auth.checkToken(token).then((res) => {
-        if (res) {
-          mainApi.getUserData(token)
-          .then((data) => {
-              setCurrentUser(data);
-              setIsAuth(true);
-              mainApi.getSavedMovie()
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    auth.checkToken(token).then((res) => {
+      if (res) {
+            setCurrentUser(res);
+            setIsAuth(true);
+            localStorage.setItem('isAuth', true);
+            mainApi.getSavedMovie()
               .then((savedMovies) => {
-                const saveMov = savedMovies.movies.filter(movie => movie.owner === data.user._id)
+                const saveMov = savedMovies.movies.filter(movie => movie.owner === res.user._id)
                 setSavedFilm(saveMov)
                 localStorage.setItem('savedMovies', JSON.stringify(saveMov));
-                history.push('/movies');
               })
               .catch((err) => {
               console.log(err);
             });
-          })
-          .catch((err) => console.log(err))
         }
-      })
-      .catch((err) => console.log(err))
-    }
-  }, []);
+    })
+    .catch((err) => console.log(err))
+  }
+}, []);
+
+
+useEffect(() => {
+  if (localStorage.getItem('isAuth') && (window.location.pathname === '/signin' || window.location.pathname === '/signup')) {
+      history.push("/movies");
+  }
+}, [history]);
 
 
   function onDeleteMovies(movieId) {
@@ -102,6 +104,8 @@ useLayoutEffect(() => {
   } 
 
   // пользователь
+
+
 
 
   function editProfile (data) {
@@ -227,7 +231,7 @@ useLayoutEffect(() => {
           <Route exact path='/singup'>
               <Register onRegister={authRegister} isPreloaderRun={isPreloaderRun} />
           </Route>
-          {isAuth ? <Redirect to="/" /> : <Redirect to="/movies" />}
+          {/* {isAuth ? <Redirect to="/" /> : <Redirect to="/movies" />} */}
           <Route exact path='/*' component={NotFound} />
         </Switch>
         <Popup isOpen={isOpenPopup} onClose={onClosePopup} messagePopup={messagePopup} /> 

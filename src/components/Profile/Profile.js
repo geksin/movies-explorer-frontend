@@ -7,7 +7,6 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 function Profile (props) {
     
     const currentUser = React.useContext(CurrentUserContext);
-    console.log(currentUser)
 
     const [profileEditing, setProfileEditing] = React.useState(false);
     const [userData, setUserData] = useState(currentUser.user);

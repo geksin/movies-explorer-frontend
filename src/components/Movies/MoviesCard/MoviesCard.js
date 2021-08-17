@@ -29,8 +29,6 @@ const [isSaved, setIsSaved] = useState(false);
 const [idSavedMovie, setIdSavedMovie] = useState('');
 
 
-console.log(idSavedMovie);
-
 function onCardDetete() {
   props.onDeleteMovies(idSavedMovie);
   setIsSaved(false);

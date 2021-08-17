@@ -6,9 +6,7 @@ import './Movies.css';
 import SearchForm from './SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-
-
+import * as moviesApi from '../../utils/moviesApi';
 
 function Movies ({isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, allArrayMovies}) {
 
@@ -43,30 +41,38 @@ function Movies ({isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, all
 
 // поиск фильма 
     function searchFilm (world) {
-        if (localStorage.getItem('movie') == null) {
-            loadingAllMovies();  // и так тоже не работает
-        }
-                // if (localStorage.getItem('movie') == null) {   Так не работает
-        //     Promise.all(moviesApi.getMovies())
-        //     .then((allArrayMovies) => {
-        //         console.log(allArrayMovies)
-        //         setMovies(allArrayMovies);
-        //         localStorage.setItem('movies', JSON.stringify(allArrayMovies));
-        //     })
-        //     .catch((err) => {
-        //     console.log(err);
-        //   })
+        // if (localStorage.getItem('movie') == null) {
+        //     loadingAllMovies();  // и так тоже не работает
         // }
-        const foundMovies = movies.filter(function(a) {
-            if (a.nameEN === null) {
-                a.nameEN = a.nameRU
-                }
-            return a.nameRU.toLowerCase().includes(world.toLowerCase()) || a.nameEN.toLowerCase().includes(world.toLowerCase())
-            })
-        localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
-        setFoundedMovies(foundMovies);
-        searchShortFilm(foundMovies);
-        setPreloaderShow(false);
+        if (localStorage.getItem('movie') == null) {
+            (async () => {
+            let res = await moviesApi.getMovies()
+            console.log(res)
+            const foundMovies = res.filter(function(a) {
+                if (a.nameEN === null) {
+                    a.nameEN = a.nameRU
+                    }
+                return a.nameRU.toLowerCase().includes(world.toLowerCase()) || a.nameEN.toLowerCase().includes(world.toLowerCase())
+                })
+            localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+            setFoundedMovies(foundMovies);
+            searchShortFilm(foundMovies);
+            setPreloaderShow(false);
+            })();
+        }
+        else {
+            const foundMovies = movies.filter(function(a) {
+                if (a.nameEN === null) {
+                    a.nameEN = a.nameRU
+                    }
+                return a.nameRU.toLowerCase().includes(world.toLowerCase()) || a.nameEN.toLowerCase().includes(world.toLowerCase())
+                })
+            localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+            setFoundedMovies(foundMovies);
+            searchShortFilm(foundMovies);
+            setPreloaderShow(false);
+        }
+
     }
 
     function searchShortFilm(arr) {
