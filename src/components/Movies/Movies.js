@@ -12,7 +12,7 @@ function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDelete
 
     // const [movies, setMovies] = useState(JSON.parse(localStorage.movies));
     const [isSearch, setIsSearch] = useState(false);
-    const [foundedMovies, setFoundedMovies] = useState({});
+    const [foundedMovies, setFoundedMovies] = useState({savedFilm});
     const [toggleActive, setToggleActive] = useState(false);
     const [shortMovies, setShortMovies] = useState([]);
 
