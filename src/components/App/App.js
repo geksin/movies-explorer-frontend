@@ -211,8 +211,8 @@ useEffect(() => {
       }
     }, []);
 
-    function isPreloader() {
-      setIsPreloaderRun(true);
+    function isPreloader(ss) {
+      setIsPreloaderRun(ss);
   }
 
 

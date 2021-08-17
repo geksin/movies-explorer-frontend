@@ -6,7 +6,7 @@ import "./Toggle.css"
 function SearchForm (props) {
 
     function handleSubmit(e) {
-        props.isPreloader();
+        props.isPreloader(true);
         e.preventDefault();
         props.isSearchActive(world);
       }
