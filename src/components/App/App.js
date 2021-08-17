@@ -231,9 +231,9 @@ useEffect(() => {
           <Route exact path='/singup'>
               <Register onRegister={authRegister} isPreloaderRun={isPreloaderRun} />
           </Route>
-          {/* {isAuth ? <Redirect to="/" /> : <Redirect to="/movies" />} */}
           <Route exact path='/*' component={NotFound} />
         </Switch>
+        {isAuth ? <Redirect to="/movies" /> : <Redirect to="/" />}
         <Popup isOpen={isOpenPopup} onClose={onClosePopup} messagePopup={messagePopup} /> 
       </CurrentUserContext.Provider>
   );
