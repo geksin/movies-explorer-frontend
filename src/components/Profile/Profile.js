@@ -21,9 +21,7 @@ function Profile (props) {
         })
         setErr({...err, [name]: e.target.validationMessage });
         setIsValid(e.target.closest("form").checkValidity());
-        if (userData.name === currentUser.user.name && userData.email === currentUser.user.email ) {
-            setIsValid(false);
-        }
+
       }
       
       const resetForm = useCallback(
@@ -45,6 +43,7 @@ function Profile (props) {
     }
 
     function submitForm (e) {
+        setProfileEditing(true);
         e.preventDefault();
         if (!userData.name || !userData.email || !userData.password){
           console.log("error")
@@ -52,7 +51,6 @@ function Profile (props) {
         }
         props.editProfile(userData);
         setProfileEditing(false);
-
     }
 
 

@@ -10,9 +10,9 @@ import * as moviesApi from '../../utils/moviesApi';
 
 function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, allArrayMovies, loadSaveMovies}) {
 
-    const [movies, setMovies] = useState(JSON.parse(localStorage.movies));
+    // const [movies, setMovies] = useState(JSON.parse(localStorage.movies));
     const [isSearch, setIsSearch] = useState(false);
-    const [foundedMovies, setFoundedMovies] = useState(JSON.parse(localStorage.foundMovies));
+    const [foundedMovies, setFoundedMovies] = useState({});
     const [toggleActive, setToggleActive] = useState(false);
     const [shortMovies, setShortMovies] = useState([]);
 
@@ -22,9 +22,10 @@ function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDelete
 
     useEffect(() => {
         if (localStorage.getItem('foundMovies')) {
-            setFoundedMovies(JSON.parse(localStorage.foundMovies));
+            let foundedMov = JSON.parse(localStorage.foundMovies)
+            setFoundedMovies(foundedMov);
             setIsSearch(true);
-            searchShortFilm(foundedMovies);
+            searchShortFilm(foundedMov);
         }
     }, [])
 
@@ -36,26 +37,8 @@ function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDelete
 
 // поиск фильма 
     function searchFilm (world) {
-        // if (localStorage.getItem('movie') == null) {
-        //     loadingAllMovies();  // и так тоже не работает
-        // }
-        // if (localStorage.getItem('movie') === null) {
-        //     (async () => {
-        //     let res = await moviesApi.getMovies()
-        //     console.log(res)
-        //     const foundMovies = res.filter(function(a) {
-        //         if (a.nameEN === null) {
-        //             a.nameEN = a.nameRU
-        //             }
-        //         return a.nameRU.toLowerCase().includes(world.toLowerCase()) || a.nameEN.toLowerCase().includes(world.toLowerCase())
-        //         })
-        //     localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
-        //     setFoundedMovies(foundMovies);
-        //     searchShortFilm(foundMovies);
-        //     setPreloaderShow(false);
-        //     })();
-        // }
-        // else {
+        try {
+            let movies = JSON.parse(localStorage.movies) 
             const foundMovies = movies.filter(function(a) {
                 if (a.nameEN === null) {
                     a.nameEN = a.nameRU
@@ -66,9 +49,14 @@ function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDelete
             setFoundedMovies(foundMovies);
             searchShortFilm(foundMovies);
             isPreloader(false);
-
-
+        }
+        catch (e) {
+            alert("Извините, в данных ошибка, мы попробуем получить их ещё раз. Повторите поиск")
+            loadingAllMovies()
+            isPreloader(false);
+        }
     }
+
 
     function searchShortFilm(arr) {
         setShortMovies(arr.filter(item => item.duration <= 40));

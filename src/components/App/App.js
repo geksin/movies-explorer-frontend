@@ -11,7 +11,7 @@ import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../Movies/SavedMovies/SavedMovies';
 import ProtectedRoute from '../ProtectedRoute.js';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
-import {useState, useEffect, useLayoutEffect} from 'react';
+import {useState, useEffect} from 'react';
 import * as auth from '../../utils/auth.js';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/mainApi.js';
@@ -110,6 +110,11 @@ useEffect(() => {
 
 
   function editProfile (data) {
+    if (data.name === currentUser.user.name && data.email === currentUser.user.email ) {
+      setIsOpenPopup(true)
+      setMessagePopup("Данные профиля не изменены, изменения не будут внесены");
+      return;
+  }
     setIsPreloaderRun(true);
       mainApi.editProfile(data)
       .then((data) => {
@@ -199,7 +204,10 @@ useEffect(() => {
     })
     .catch((err) => {
     console.log(err);
-  });
+    })
+    .finally(() => {
+      setIsPreloaderRun(false);
+    })
   }
 
 
@@ -211,8 +219,8 @@ useEffect(() => {
       }
     }, []);
 
-    function isPreloader(ss) {
-      setIsPreloaderRun(ss);
+    function isPreloader(value) {
+      setIsPreloaderRun(value);
   }
 
 
