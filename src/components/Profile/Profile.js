@@ -2,11 +2,15 @@ import React from 'react';
 import './Profile.css';
 import {useState, useCallback} from 'react';
 import Preloader from '../Preloader/Preloader'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile (props) {
     
+    const currentUser = React.useContext(CurrentUserContext);
+    console.log(currentUser)
+
     const [profileEditing, setProfileEditing] = React.useState(false);
-    const [userData, setUserData] = useState({name: props.user.user.name, email: props.user.user.email ,password: ''});
+    const [userData, setUserData] = useState(currentUser.user);
     const [err, setErr] = useState({});
     const [isValid, setIsValid] = useState(false);
 

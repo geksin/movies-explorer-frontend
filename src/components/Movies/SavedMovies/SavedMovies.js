@@ -6,14 +6,13 @@ import '../Movies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardLisSaved';
-import mainApi from '../../../utils/mainApi';
 
 
 
 function SavedMovies (props) {
 
 
-    const foundedMovies = JSON.parse(localStorage.movies);
+    const foundedMovies = JSON.parse(localStorage.savedMovies);
     const [preloaderShow, setPreloaderShow] = useState(false);
     const [toggleActive, setToggleActive] = React.useState(false);
     const [savedMovies, setSavedMovies] = useState(props.savedFilm);
@@ -31,7 +30,7 @@ function SavedMovies (props) {
 
 // поиск фильма по слову
     function searchFilm (world) {
-        const foundMovies = savedMovies.filter((a) => {
+        const foundMovies = foundedMovies.filter((a) => {
             if (a.nameEN === null) {
                 a.nameEN = a.nameRU
                 }
@@ -40,6 +39,7 @@ function SavedMovies (props) {
         setSavedMovies(foundMovies);
         searchShortFilm(foundMovies);
         setPreloaderShow(false);
+        localStorage.setItem('searchWorld', world);
     }
 
     function searchShortFilm(arr) {

@@ -81,7 +81,7 @@ function MoviesCardList (props) {
             setShowBotton(false);
         }
     }
-    
+    console.log(moviesShowNow)
 
     return (
         <>
@@ -90,7 +90,7 @@ function MoviesCardList (props) {
                 {moviesShowNow.map((item) => <MoviesCard
                 user={props.user}
                 savedFilm={props.savedFilm}
-                onSaveMovies={props.onSaveMovies}
+                onDeleteMovies={props.onDeleteMovies}
                 key = {item.id}
                 movieId={item.id}
                 country={item.country}

@@ -8,7 +8,6 @@ import MoviesCard from '../MoviesCard/MoviesCardSaved';
 function MoviesCardList (props) {
 
     const totalMovies = props.moviesShow.length
-    console.log(props.moviesShow);
 
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [showBotton, setShowBotton] = useState(false);
@@ -84,7 +83,7 @@ function MoviesCardList (props) {
 
     return (
         <>
-        {totalMovies === 0 ? <p className="movies__text">Ничего не найдено</p> : 
+        {totalMovies === 0 ? <p className="movies__text">Ничего не найдено в сохраненных фильмах</p> : 
             <div className="movies__cards-container">
                 {moviesShowNow.map((item) => <MoviesCard
                 key = {item._id}
