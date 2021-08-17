@@ -21,7 +21,7 @@ function Profile (props) {
         })
         setErr({...err, [name]: e.target.validationMessage });
         setIsValid(e.target.closest("form").checkValidity());
-        if (userData.name === props.user.user.name && userData.email === props.user.user.email ) {
+        if (userData.name === currentUser.user.name && userData.email === currentUser.user.email ) {
             setIsValid(false);
         }
       }

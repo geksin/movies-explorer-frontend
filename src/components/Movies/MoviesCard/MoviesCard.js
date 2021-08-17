@@ -52,7 +52,11 @@ function onCardDetete() {
         movieId)
         .then((data) => {
           setIdSavedMovie(data.movie._id);
-          setIsSaved(!isSaved);
+          (async () => {
+            props.isPreloader(true);
+            let res = await props.loadSaveMovies();
+            setIsSaved(!isSaved);
+          })();
         })
         .catch((err) => {
           console.log(err);

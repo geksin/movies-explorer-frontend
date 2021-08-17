@@ -8,10 +8,9 @@ import Preloader from '../Preloader/Preloader';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
 import * as moviesApi from '../../utils/moviesApi';
 
-function Movies ({isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, allArrayMovies}) {
+function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, allArrayMovies, loadSaveMovies}) {
 
     const [movies, setMovies] = useState(JSON.parse(localStorage.movies));
-    const [preloaderShow, setPreloaderShow] = useState(false);
     const [isSearch, setIsSearch] = useState(false);
     const [foundedMovies, setFoundedMovies] = useState(JSON.parse(localStorage.foundMovies));
     const [toggleActive, setToggleActive] = useState(false);
@@ -35,32 +34,28 @@ function Movies ({isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, all
         searchFilm(world);
     }
 
-    function isPreloader() {
-        setPreloaderShow(true);
-    }
-
 // поиск фильма 
     function searchFilm (world) {
         // if (localStorage.getItem('movie') == null) {
         //     loadingAllMovies();  // и так тоже не работает
         // }
-        if (localStorage.getItem('movie') == null) {
-            (async () => {
-            let res = await moviesApi.getMovies()
-            console.log(res)
-            const foundMovies = res.filter(function(a) {
-                if (a.nameEN === null) {
-                    a.nameEN = a.nameRU
-                    }
-                return a.nameRU.toLowerCase().includes(world.toLowerCase()) || a.nameEN.toLowerCase().includes(world.toLowerCase())
-                })
-            localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
-            setFoundedMovies(foundMovies);
-            searchShortFilm(foundMovies);
-            setPreloaderShow(false);
-            })();
-        }
-        else {
+        // if (localStorage.getItem('movie') === null) {
+        //     (async () => {
+        //     let res = await moviesApi.getMovies()
+        //     console.log(res)
+        //     const foundMovies = res.filter(function(a) {
+        //         if (a.nameEN === null) {
+        //             a.nameEN = a.nameRU
+        //             }
+        //         return a.nameRU.toLowerCase().includes(world.toLowerCase()) || a.nameEN.toLowerCase().includes(world.toLowerCase())
+        //         })
+        //     localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+        //     setFoundedMovies(foundMovies);
+        //     searchShortFilm(foundMovies);
+        //     setPreloaderShow(false);
+        //     })();
+        // }
+        // else {
             const foundMovies = movies.filter(function(a) {
                 if (a.nameEN === null) {
                     a.nameEN = a.nameRU
@@ -70,8 +65,8 @@ function Movies ({isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, all
             localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
             setFoundedMovies(foundMovies);
             searchShortFilm(foundMovies);
-            setPreloaderShow(false);
-        }
+            isPreloader(false);
+
 
     }
 
@@ -86,8 +81,8 @@ function Movies ({isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, all
             <main className="movies">
                 <SearchForm isSearchActive={isSearchActive} handleToggle={handleToggle} isPreloader={isPreloader} />
 
-                {isSearch ? <MoviesCardList moviesShow={toggleActive ? shortMovies : foundedMovies} user={user} savedFilm={savedFilm} toggleActive={toggleActive} onDeleteMovies={onDeleteMovies} /> : <p className="movies__text">Введите что-то для поиска</p> }
-                {preloaderShow ? <Preloader /> : <div></div> }
+                {isSearch ? <MoviesCardList isPreloaderRun={isPreloaderRun} moviesShow={toggleActive ? shortMovies : foundedMovies} user={user} savedFilm={savedFilm} isPreloader={isPreloader} toggleActive={toggleActive} onDeleteMovies={onDeleteMovies} loadSaveMovies={loadSaveMovies} /> : <p className="movies__text">Введите что-то для поиска</p> }
+                {isPreloaderRun ? <Preloader /> : <div></div> }
                 
             </main>
             <Footer />

@@ -88,7 +88,10 @@ function MoviesCardList (props) {
             <div className="movies__cards-container">
                 {moviesShowNow.map((item) => <MoviesCard
                 user={props.user}
+                isPreloader={props.isPreloader}
+                isPreloaderRun={props.isPreloaderRun}
                 savedFilm={props.savedFilm}
+                loadSaveMovies={props.loadSaveMovies}
                 onDeleteMovies={props.onDeleteMovies}
                 key = {item.id}
                 movieId={item.id}

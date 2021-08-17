@@ -87,6 +87,7 @@ useEffect(() => {
       const saveMov = savedMovies.movies.filter(movie => movie.owner === currentUser.user._id)
       setSavedFilm(saveMov)
       localStorage.setItem('savedMovies', JSON.stringify(saveMov));
+      setIsPreloaderRun(false);
     })
     .catch((err) => {
     console.log(err);
@@ -132,8 +133,7 @@ useEffect(() => {
   function authLogin(email, password) {
     setIsPreloaderRun(true);
     return auth.login(email, password)
-      .then((data) => {
-        console.log(data);
+      .then((data) => { 
         if (!data) throw new Error ('При авторизации произошла ошибка')
         if (data.token) {
           localStorage.setItem('token', data.token);
@@ -211,13 +211,16 @@ useEffect(() => {
       }
     }, []);
 
+    function isPreloader() {
+      setIsPreloaderRun(true);
+  }
 
 
 
   return (
       <CurrentUserContext.Provider value={currentUser} >
         <Switch>
-          <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} allArrayMovies={allArrayMovies} loadingAllMovies={loadingAllMovies} user={currentUser} onDeleteMovies={onDeleteMovies} savedFilm={savedFilm} />
+          <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} isPreloaderRun={isPreloaderRun} isPreloader={isPreloader} allArrayMovies={allArrayMovies} loadingAllMovies={loadingAllMovies} user={currentUser} onDeleteMovies={onDeleteMovies} savedFilm={savedFilm}  loadSaveMovies={loadSaveMovies} />
           <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies}  user={currentUser} onDeleteMovies={onDeleteMovies} savedFilm={savedFilm} />
           <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} isPreloaderRun={isPreloaderRun} editProfile={editProfile} user={currentUser} singOut={singOut} />
           <Route exact path="/">
