@@ -11,7 +11,7 @@ import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../Movies/SavedMovies/SavedMovies';
 import ProtectedRoute from '../ProtectedRoute.js';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useLayoutEffect} from 'react';
 import * as auth from '../../utils/auth.js';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/mainApi.js';
@@ -27,44 +27,50 @@ function App() {
   const [currentUser, setCurrentUser] = useState({_id: '', name:'', email:''});
   const [savedFilm, setSavedFilm] = useState([]);
   const [allArrayMovies, setAllArrayMovies] = useState([]);
-  const [isAuth, setIsAuth] = useState(false);
-
+  const [isAuth, setIsAuth] = useState(localStorage.getItem('isAuth') || false);
 
 
 function onClosePopup() {
   setIsOpenPopup(!isOpenPopup);
 }
 
-
-useEffect(() => {
+function checkToken() {
   const token = localStorage.getItem('token');
   if (token) {
-    auth.checkToken(token).then((res) => {
-      if (res) {
-            setCurrentUser(res);
-            setIsAuth(true);
-            localStorage.setItem('isAuth', true);
-            mainApi.getSavedMovie()
-              .then((savedMovies) => {
-                const saveMov = savedMovies.movies.filter(movie => movie.owner === res.user._id)
-                setSavedFilm(saveMov)
-                localStorage.setItem('savedMovies', JSON.stringify(saveMov));
-              })
-              .catch((err) => {
-              console.log(err);
-            });
-        }
-    })
-    .catch((err) => console.log(err))
+      auth.checkToken(token).then((res) => {
+        if (res) {
+              setCurrentUser(res);
+              setIsAuth(true);
+              localStorage.setItem('isAuth', true);
+              mainApi.getSavedMovie()
+                .then((savedMovies) => {
+                  const saveMov = savedMovies.movies.filter(movie => movie.owner === res.user._id)
+                  localStorage.setItem('savedMovies', JSON.stringify(saveMov));
+                })
+                .catch((err) => {
+                console.log(err);
+              });
+          }
+      })
+      .catch((err) => console.log(err))
   }
-}, []);
+  }
+
+
+  useLayoutEffect(() => {
+    checkToken()
+    
+  }, []);
 
 
 useEffect(() => {
-  if (localStorage.getItem('isAuth') && (window.location.pathname === '/signin' || window.location.pathname === '/signup')) {
+  if (isAuth) {
+    if (window.location.pathname == '/signin' || window.location.pathname == '/signup') {
+      console.log('yes')
       history.push("/movies");
+    }
   }
-}, [history]);
+}, [isAuth]);
 
 
   function onDeleteMovies(movieId) {
@@ -85,7 +91,6 @@ useEffect(() => {
     mainApi.getSavedMovie()
     .then((savedMovies) => {
       const saveMov = savedMovies.movies.filter(movie => movie.owner === currentUser.user._id)
-      setSavedFilm(saveMov)
       localStorage.setItem('savedMovies', JSON.stringify(saveMov));
       setIsPreloaderRun(false);
     })
@@ -93,13 +98,17 @@ useEffect(() => {
     console.log(err);
   })
   .finally(() => {
-    localStorage.setItem('savedMovies', JSON.stringify(savedFilm));
+    // localStorage.setItem('savedMovies', JSON.stringify(savedFilm));
   })
 }
 
 
   function singOut() {
     localStorage.removeItem('token');
+    localStorage.removeItem('savedMovies');
+    localStorage.removeItem('foundMovies');
+    localStorage.removeItem('searchWorld');
+    localStorage.removeItem('isAuth');
     setIsAuth(false);
     history.push('/')
   } 
@@ -142,6 +151,8 @@ useEffect(() => {
         if (!data) throw new Error ('При авторизации произошла ошибка')
         if (data.token) {
           localStorage.setItem('token', data.token);
+          loadingAllMovies();
+          checkToken();
           mainApi.getUserData(data.token)
           .then((data) => {
               setCurrentUser(data);
@@ -228,8 +239,8 @@ useEffect(() => {
   return (
       <CurrentUserContext.Provider value={currentUser} >
         <Switch>
-          <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} isPreloaderRun={isPreloaderRun} isPreloader={isPreloader} allArrayMovies={allArrayMovies} loadingAllMovies={loadingAllMovies} user={currentUser} onDeleteMovies={onDeleteMovies} savedFilm={savedFilm}  loadSaveMovies={loadSaveMovies} />
-          <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies}  user={currentUser} onDeleteMovies={onDeleteMovies} savedFilm={savedFilm} />
+          <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} isPreloaderRun={isPreloaderRun} isPreloader={isPreloader} allArrayMovies={allArrayMovies} loadingAllMovies={loadingAllMovies} user={currentUser} onDeleteMovies={onDeleteMovies} loadSaveMovies={loadSaveMovies} />
+          <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies}  user={currentUser} onDeleteMovies={onDeleteMovies} />
           <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} isPreloaderRun={isPreloaderRun} editProfile={editProfile} user={currentUser} singOut={singOut} />
           <Route exact path="/">
             <Header isAuth={isAuth} />
@@ -244,7 +255,7 @@ useEffect(() => {
           </Route>
           <Route exact path='/*' component={NotFound} />
         </Switch>
-        {isAuth ? <Redirect to="/movies" /> : <Redirect to="/" />}
+        {/* {isAuth ? <Redirect to="/movies" /> : <Redirect to="/" />} */}
         <Popup isOpen={isOpenPopup} onClose={onClosePopup} messagePopup={messagePopup} /> 
       </CurrentUserContext.Provider>
   );

@@ -6,13 +6,13 @@ import './Movies.css';
 import SearchForm from './SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
-import * as moviesApi from '../../utils/moviesApi';
+import {SHORT_MOVIES} from '../../utils/const'
 
-function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDeleteMovies, loadingAllMovies, allArrayMovies, loadSaveMovies}) {
+function Movies ({isPreloaderRun, isPreloader, isAuth, user, onDeleteMovies, loadingAllMovies, loadSaveMovies}) {
 
     // const [movies, setMovies] = useState(JSON.parse(localStorage.movies));
     const [isSearch, setIsSearch] = useState(false);
-    const [foundedMovies, setFoundedMovies] = useState({savedFilm});
+    const [foundedMovies, setFoundedMovies] = useState({});
     const [toggleActive, setToggleActive] = useState(false);
     const [shortMovies, setShortMovies] = useState([]);
 
@@ -46,6 +46,7 @@ function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDelete
                 return a.nameRU.toLowerCase().includes(world.toLowerCase()) || a.nameEN.toLowerCase().includes(world.toLowerCase())
                 })
             localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
+            localStorage.setItem('searchWorld', world);
             setFoundedMovies(foundMovies);
             searchShortFilm(foundMovies);
             isPreloader(false);
@@ -59,7 +60,7 @@ function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDelete
 
 
     function searchShortFilm(arr) {
-        setShortMovies(arr.filter(item => item.duration <= 40));
+        setShortMovies(arr.filter(item => item.duration <= SHORT_MOVIES));
     }
 
 
@@ -68,8 +69,7 @@ function Movies ({isPreloaderRun, isPreloader, isAuth, savedFilm, user, onDelete
             <Header isAuth={isAuth} />
             <main className="movies">
                 <SearchForm isSearchActive={isSearchActive} handleToggle={handleToggle} isPreloader={isPreloader} />
-
-                {isSearch ? <MoviesCardList isPreloaderRun={isPreloaderRun} moviesShow={toggleActive ? shortMovies : foundedMovies} user={user} savedFilm={savedFilm} isPreloader={isPreloader} toggleActive={toggleActive} onDeleteMovies={onDeleteMovies} loadSaveMovies={loadSaveMovies} /> : <p className="movies__text">Введите что-то для поиска</p> }
+                {isSearch ? <MoviesCardList isPreloaderRun={isPreloaderRun} moviesShow={toggleActive ? shortMovies : foundedMovies} user={user} isPreloader={isPreloader} toggleActive={toggleActive} onDeleteMovies={onDeleteMovies} loadSaveMovies={loadSaveMovies} /> : <p className="movies__text">Введите что-то для поиска</p> }
                 {isPreloaderRun ? <Preloader /> : <div></div> }
                 
             </main>

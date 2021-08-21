@@ -1,22 +1,28 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Footer from '../../Footer/Footer';
 import Header from '../../Header/Header';
 import '../Movies.css';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardLisSaved';
+import {SHORT_MOVIES} from '../../../utils/const'
 
 
 
 function SavedMovies (props) {
 
-
-    const foundedMovies = JSON.parse(localStorage.savedMovies);
+    const [foundedMovies, setFoundedMovies] = useState(JSON.parse(localStorage.savedMovies));
     const [preloaderShow, setPreloaderShow] = useState(false);
-    const [toggleActive, setToggleActive] = React.useState(false);
-    const [savedMovies, setSavedMovies] = useState(props.savedFilm);
+    const [toggleActive, setToggleActive] = useState(false);
+    const [savedMovies, setSavedMovies] = useState([]);
     const [shortMovies, setShortMovies] = useState([]);
+
+
+    useEffect(() => {
+        setSavedMovies(foundedMovies);
+        searchShortFilm(foundedMovies);
+    }, [foundedMovies])
 
     function handleToggle() {
         setToggleActive(!toggleActive);
@@ -39,11 +45,11 @@ function SavedMovies (props) {
         setSavedMovies(foundMovies);
         searchShortFilm(foundMovies);
         setPreloaderShow(false);
-        localStorage.setItem('searchWorld', world);
+        
     }
 
     function searchShortFilm(arr) {
-        setShortMovies(arr.filter(item => item.duration <= 40));
+        setShortMovies(arr.filter(item => item.duration <= SHORT_MOVIES));
     }
 
     function isPreloader() {

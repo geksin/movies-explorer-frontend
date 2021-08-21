@@ -24,18 +24,18 @@ function Profile (props) {
 
       }
       
-      const resetForm = useCallback(
-        (newData = {
-            name: '',
-            email: '',
-            password: '',
-        }, newErrors = {}, newIsValid = false) => {
-          setUserData(newData);
-          setErr(newErrors);
-          setIsValid(newIsValid);
-        },
-        [userData, err, isValid],
-      );
+    //   const resetForm = useCallback(
+    //     (newData = {
+    //         name: '',
+    //         email: '',
+    //         password: '',
+    //     }, newErrors = {}, newIsValid = false) => {
+    //       setUserData(newData);
+    //       setErr(newErrors);
+    //       setIsValid(newIsValid);
+    //     },
+    //     [userData, err, isValid],
+    //   );
 
 
     function editProfile () {

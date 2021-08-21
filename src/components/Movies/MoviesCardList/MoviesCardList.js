@@ -2,7 +2,7 @@ import React from 'react';
 import {useState, useEffect, useLayoutEffect} from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
-
+import {MORE, START_MOVIES, WIGHT} from '../../../utils/const'
 
 
 function MoviesCardList (props) {
@@ -28,14 +28,14 @@ function MoviesCardList (props) {
        }, []);
 
     function addMore () {
-        if (screenWidth >= 1280) {
-            return setMoreButton(moreButton + 3);
+        if (screenWidth >= WIGHT.desktop) {
+            return setMoreButton(moreButton + MORE.desktop);
         } 
-        if (screenWidth > 480 && screenWidth < 1280) {
-            return setMoreButton(moreButton + 2);
+        if (screenWidth > WIGHT.mobile && screenWidth < WIGHT.desktop) {
+            return setMoreButton(moreButton + MORE.laptop);
         } 
-        if (screenWidth < 480) {
-            return setMoreButton(moreButton + 2);
+        if (screenWidth < WIGHT.mobile) {
+            return setMoreButton(moreButton + MORE.mobile);
         } 
     }
 
@@ -45,18 +45,18 @@ function MoviesCardList (props) {
         if (isNaN(moreButton)) {
             moreButton = 0;
         }
-        if (screenWidth >= 1280) {
-            const movieArr = props.moviesShow.slice(0, 12 + moreButton)
+        if (screenWidth >= WIGHT.desktop) {
+            const movieArr = props.moviesShow.slice(0, START_MOVIES.desktop + moreButton)
             setMoviesShowNow(movieArr);
             showBottons(movieArr.length);
         }
-        if (screenWidth > 480 && screenWidth < 1280) {
-            const movieArr = props.moviesShow.slice(0, 8 + moreButton)
+        if (screenWidth > WIGHT.mobile && screenWidth < WIGHT.desktop) {
+            const movieArr = props.moviesShow.slice(0, START_MOVIES.laptop + moreButton)
             setMoviesShowNow(movieArr);
             showBottons(movieArr.length);
         }
-        if (screenWidth < 480) {
-            const movieArr = props.moviesShow.slice(0, 5 + moreButton)
+        if (screenWidth < WIGHT.mobile) {
+            const movieArr = props.moviesShow.slice(0, START_MOVIES.mobile + moreButton)
             setMoviesShowNow(movieArr);
             showBottons(movieArr.length);
         }

@@ -21,7 +21,8 @@ function MoviesCard (props) {
     thumbnail,
     key,
   } = props;
-  
+
+  const savedFilm = JSON.parse(localStorage.savedMovies);
   const URL_IMAGE = 'https://api.nomoreparties.co';
 
 
@@ -33,6 +34,10 @@ function onCardDetete() {
   props.onDeleteMovies(idSavedMovie);
   setIsSaved(false);
 } 
+
+useLayoutEffect(() => {
+  savedMovies();
+},[])
 
   function onCardSave() {
     if (country === null) {
@@ -55,7 +60,7 @@ function onCardDetete() {
           (async () => {
             props.isPreloader(true);
             let res = await props.loadSaveMovies();
-            setIsSaved(!isSaved);
+            setIsSaved(true);
           })();
         })
         .catch((err) => {
@@ -63,15 +68,17 @@ function onCardDetete() {
         });
       }
 
+      function savedMovies() {
+        savedFilm.forEach(function(i) {
+          if (i.nameRU === nameRU) {
+            setIsSaved(true)
+            setIdSavedMovie(i._id);
+          }})
+      }
 
 
-  useLayoutEffect(() => {
-    props.savedFilm.forEach(function(i) {
-      if (i.nameRU === nameRU) {
-        setIsSaved(true)
-        setIdSavedMovie(i._id);
-      }})
-  },[])
+
+
   
 
 
