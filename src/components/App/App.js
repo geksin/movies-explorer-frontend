@@ -24,8 +24,7 @@ function App() {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [isPreloaderRun, setIsPreloaderRun] = useState(false);
   const [messagePopup, setMessagePopup] = useState("");
-  const [currentUser, setCurrentUser] = useState({_id: '', name:'', email:''});
-  const [savedFilm, setSavedFilm] = useState([]);
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
   const [allArrayMovies, setAllArrayMovies] = useState([]);
   const [isAuth, setIsAuth] = useState(localStorage.getItem('isAuth') || false);
 
@@ -37,9 +36,11 @@ function onClosePopup() {
 function checkToken() {
   const token = localStorage.getItem('token');
   if (token) {
-      auth.checkToken(token).then((res) => {
+      auth.checkToken(token)
+      .then((res) => {
         if (res) {
               setCurrentUser(res);
+              localStorage.setItem('currentUser', JSON.stringify(res))
               setIsAuth(true);
               localStorage.setItem('isAuth', true);
               mainApi.getSavedMovie()
@@ -48,7 +49,9 @@ function checkToken() {
                   localStorage.setItem('savedMovies', JSON.stringify(saveMov));
                 })
                 .catch((err) => {
-                console.log(err);
+                  setIsOpenPopup(true);
+                  setMessagePopup("что-то пошло не так, перезагрузите страницу");
+                  console.log(err);
               });
           }
       })
@@ -64,12 +67,9 @@ function checkToken() {
 
 
 useEffect(() => {
-  if (isAuth) {
-    if (window.location.pathname == '/signin' || window.location.pathname == '/signup') {
-      console.log('yes')
+  if (isAuth && (window.location.pathname === '/singin' || window.location.pathname === '/singup')) {
       history.push("/movies");
     }
-  }
 }, [isAuth]);
 
 
@@ -109,6 +109,8 @@ useEffect(() => {
     localStorage.removeItem('foundMovies');
     localStorage.removeItem('searchWorld');
     localStorage.removeItem('isAuth');
+    localStorage.removeItem('searchSavedWorld');
+    localStorage.removeItem('currentUser');
     setIsAuth(false);
     history.push('/')
   } 
@@ -128,6 +130,7 @@ useEffect(() => {
       mainApi.editProfile(data)
       .then((data) => {
         setCurrentUser(data);
+        localStorage.setItem('currentUser', JSON.stringify(data))
         setMessagePopup('Данные успешно сохранены');
         setIsOpenPopup(true);
       })
@@ -156,6 +159,7 @@ useEffect(() => {
           mainApi.getUserData(data.token)
           .then((data) => {
               setCurrentUser(data);
+              localStorage.setItem('currentUser', JSON.stringify(data))
               setIsAuth(true);
               history.push('/movies');
           })
@@ -241,7 +245,7 @@ useEffect(() => {
         <Switch>
           <ProtectedRoute exact path="/movies" isAuth={isAuth} component={Movies} isPreloaderRun={isPreloaderRun} isPreloader={isPreloader} allArrayMovies={allArrayMovies} loadingAllMovies={loadingAllMovies} user={currentUser} onDeleteMovies={onDeleteMovies} loadSaveMovies={loadSaveMovies} />
           <ProtectedRoute exact path="/saved-movies" isAuth={isAuth} component={SavedMovies}  user={currentUser} onDeleteMovies={onDeleteMovies} />
-          <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} isPreloaderRun={isPreloaderRun} editProfile={editProfile} user={currentUser} singOut={singOut} />
+          <ProtectedRoute exact path='/profile' isAuth={isAuth} component={Profile} isPreloaderRun={isPreloaderRun} editProfile={editProfile} singOut={singOut} />
           <Route exact path="/">
             <Header isAuth={isAuth} />
             <Main />

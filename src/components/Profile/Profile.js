@@ -1,13 +1,12 @@
 import React from 'react';
 import './Profile.css';
-import {useState, useCallback} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import Preloader from '../Preloader/Preloader'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile (props) {
     
     const currentUser = React.useContext(CurrentUserContext);
-
     const [profileEditing, setProfileEditing] = React.useState(false);
     const [userData, setUserData] = useState(currentUser.user);
     const [err, setErr] = useState({});
@@ -21,9 +20,16 @@ function Profile (props) {
         })
         setErr({...err, [name]: e.target.validationMessage });
         setIsValid(e.target.closest("form").checkValidity());
-
       }
       
+      useEffect(() => {
+        if (userData.name || userData.email || userData.password) {
+            setIsValid(true);
+        }
+      },[userData])
+
+
+
     //   const resetForm = useCallback(
     //     (newData = {
     //         name: '',

@@ -2,10 +2,11 @@ import React from 'react';
 import { Route, Redirect } from "react-router-dom";
 
 const ProtectedRoute = ({ component: Component, ...props  }) => {
+  const isAuth = localStorage.getItem('isAuth'); 
   return (
     <Route>
       {
-        () => props.isAuth ? <Component {...props} /> : <Redirect to="./singin" />
+        () => isAuth ? <Component {...props} /> : <Redirect to="./singin" />
       }
     </Route>
 )}

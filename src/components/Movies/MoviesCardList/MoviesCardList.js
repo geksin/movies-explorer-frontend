@@ -90,7 +90,6 @@ function MoviesCardList (props) {
                 user={props.user}
                 isPreloader={props.isPreloader}
                 isPreloaderRun={props.isPreloaderRun}
-                savedFilm={props.savedFilm}
                 loadSaveMovies={props.loadSaveMovies}
                 onDeleteMovies={props.onDeleteMovies}
                 key = {item.id}
