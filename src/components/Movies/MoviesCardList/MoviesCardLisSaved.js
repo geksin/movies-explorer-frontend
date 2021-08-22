@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect, useLayoutEffect} from 'react';
 import './MoviesCardList.css';
-import MoviesCard from '../MoviesCard/MoviesCard';
+import MoviesCard from '../MoviesCard/MoviesCardSaved';
 import {MORE, START_MOVIES, WIGHT} from '../../../utils/const'
 
 
@@ -71,7 +71,6 @@ function MoviesCardList (props) {
     },[props.moviesShow])
 
 
-
     function showBottons (arr) {
         if (
             ((arr + moreButton) < totalMovies))
@@ -84,27 +83,23 @@ function MoviesCardList (props) {
 
     return (
         <>
-        {totalMovies === 0 ? <p className="movies__text">Ничего не найдено</p> : 
+        {totalMovies === 0 ? <p className="movies__text">Ничего не найдено в сохраненных фильмах</p> : 
             <div className="movies__cards-container">
                 {moviesShowNow.map((item) => <MoviesCard
-                user={props.user}
-                isPreloader={props.isPreloader}
-                isPreloaderRun={props.isPreloaderRun}
-                loadSaveMovies={props.loadSaveMovies}
-                onDeleteMovies={props.onDeleteMovies}
-                key = {item.id}
-                movieId={item.id}
+                key = {item._id}
+                movieId={item._id}
                 country={item.country}
                 director={item.director}
                 duration={item.duration}
                 year={item.year}
                 description={item.description}
-                image={item.image.url}
+                image={item.image}
                 trailer={item.trailerLink}
                 nameRU={item.nameRU}
                 nameEN={item.nameEN}
-                thumbnail={item.image.formats.thumbnail.url}                
-                 />)}
+                thumbnail={item.thumbnail}
+                onDeleteMovies={props.onDeleteMovies} 
+                />)}
             </div>
         }
             <div className="movies__block-button-more">

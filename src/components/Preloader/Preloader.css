@@ -40,13 +40,17 @@
 }
 
 .preloader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 0;
+    right: auto;
     width: 100%;
     height: 100%;
     z-index: 10;
-    padding: 20px;
+    position: absolute;
+    display: flex;
+    background: rgba(0,0,0,0.3);
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .preloader__container {
@@ -61,7 +65,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: #FF6838;
+    background: #1f1f1f;
     border-radius: 50px;
 }
 
@@ -77,12 +81,12 @@
 }
 
 .preloader__round::after {
-    background: white;
+    background: rgb(87, 87, 87);
     animation: preloader-inside-white 1s ease-in-out infinite;
 }
 
 .preloader__round::before {
     z-index: 10;
-    background: #FF6838;
+    background: #1f1f1f;
     animation: preloader-inside-red 1s ease-in-out infinite;
 }

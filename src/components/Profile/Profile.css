@@ -43,10 +43,11 @@
 }
 
 .profile__input {
+    margin-top: 12px;
+    padding: 12px;
     border: none;
-    background: rgba(100, 100, 100, 0.5);
+    background: rgba(100, 100, 100, 0.1);
     border-radius: 8px;
-    padding-left: 12px;
     color: #fff;
 }
 
@@ -60,14 +61,16 @@
     flex-direction:column;
     width: 410px;
     font-size: 13px;
+
 }
 
 .profile__link-edit {
     background:none;
     border:none;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     cursor: pointer;
     color: #fff;
+    height: 28px;
 }
 
 .profile__link-out {
@@ -76,9 +79,26 @@
     margin-bottom: 16px;
     cursor: pointer;
     color: #EE3465;
+    height: 28px;
+}
+
+.profile__info-error {
+    padding-left: 10px;
+    color: #EE3465;
+    font-size:10px;
+    margin:0 auto;
 }
 
 .profile__link-out:hover, .profile__link-edit:hover {
     background:rgba(100, 100, 100, 0.5);
     border-radius:10px;
+}
+
+.profile__link-edit:disabled {
+    background:rgba(100, 100, 100, 0.1);
+    color: #666;
+    border-radius:10px;
+    margin-bottom: 8px;
+    border:none;
+    height: 28px;
 }
